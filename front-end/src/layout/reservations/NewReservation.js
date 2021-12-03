@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 function NewReservation() {
+
+    const history = useHistory();
+
     const initialFormState = {
         first_name: "",
         last_name: "",
@@ -23,6 +27,8 @@ function NewReservation() {
         event.preventDefault();
         console.log("Input\n", formData.first_name, formData.last_name, formData.mobile_number, 
             formData.reservation_date, formData.reservation_time, formData.people);
+        // todo: post request and error handling with ErrorAlert.js
+        history.push("/dashboard");
     }
 
     return (
@@ -59,7 +65,7 @@ function NewReservation() {
                         name="mobile_number"
                         onChange={handleChange}
                         value={formData.mobile_number}
-                        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                        // pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"  // todo: uncomment this?
                         placeholder="###-###-####"
                         required
                     />
@@ -104,6 +110,8 @@ function NewReservation() {
                 </label>
                 <button type="submit">Submit</button>
             </form>
+
+            <button type="button" onClick={() => history.goBack()}>Cancel</button>
         </>
     );
 }
