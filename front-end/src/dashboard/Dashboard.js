@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { listReservations } from "../utils/api";
+import { next, previous, today } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
 import DashboardButtons from "./DashboardButtons";
 
@@ -18,16 +19,19 @@ function Dashboard({ date }) {
 
   const handleNext = () => {
     console.log("Next pressed");
+    date = next(date);
     document.getElementById("next").blur();
   }
 
   const handlePrevious = () => {
     console.log("Previous pressed");
+    date = previous(date);
     document.getElementById("previous").blur();
   }
 
   const handleToday = () => {
     console.log("Today pressed");
+    date = today();
     document.getElementById("today").blur();
   }
 
