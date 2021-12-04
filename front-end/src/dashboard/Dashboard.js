@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { listReservations } from "../utils/api";
+import { getReservationsForDay, listReservations } from "../utils/api";
 import { next, previous, today } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
 import DashboardButtons from "./DashboardButtons";
@@ -10,35 +10,38 @@ import DashboardButtons from "./DashboardButtons";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-// todo: is the default value necessary i.e. = new Date()
 function Dashboard({ date }) {
+  const [day, setDay] = useState(date);
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
 
-  useEffect(loadDashboard, [date]);
+  useEffect(loadDashboard, [day]);
 
   const handleNext = () => {
     console.log("Next pressed");
-    date = next(date);
+    setDay(next(day));
     document.getElementById("next").blur();
   }
 
   const handlePrevious = () => {
     console.log("Previous pressed");
-    date = previous(date);
+    setDay(previous(day));
     document.getElementById("previous").blur();
   }
 
   const handleToday = () => {
     console.log("Today pressed");
-    date = today();
+    setDay(today());
     document.getElementById("today").blur();
   }
 
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
-    listReservations({ date }, abortController.signal)
+    // listReservations({ date }, abortController.signal)
+    //   .then(setReservations)
+    //   .catch(setReservationsError);
+    getReservationsForDay(day)
       .then(setReservations)
       .catch(setReservationsError);
     return () => abortController.abort();

@@ -5,6 +5,8 @@
 import formatReservationDate from "./format-reservation-date";
 import formatReservationTime from "./format-reservation-date";
 
+const axios = require("axios");
+
 const API_BASE_URL =
   process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
 
@@ -50,6 +52,19 @@ async function fetchJson(url, options, onCancel) {
     }
     return Promise.resolve(onCancel);
   }
+}
+
+export async function getReservationsForDay(date) {
+  console.log(date);
+  console.log(`${API_BASE_URL}/reservations?date=${date}`)
+  return axios
+    .get(`${API_BASE_URL}/reservations?date=${date}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error.message)
+    });
 }
 
 /**

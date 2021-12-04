@@ -1,5 +1,7 @@
 const service = require("./reservations.service");
+const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const hasProperties = require("../errors/hasProperties");
+const today = require("../utils/today");
 
 // Validation
 
@@ -34,7 +36,6 @@ function hasOnlyValidProperties(req, res, next) {
 
 // Route Handlers
 
-// todo: error handling and use Postman to test if this works
 async function create(req, res, next) {
   const data = await service 
     .create(req.body.data);
@@ -45,10 +46,17 @@ async function create(req, res, next) {
  * List handler for reservation resources
  */
 async function list(req, res) {
-  const data = await service.listForDate(req.params.date);
+  console.log(req.query);
+  let date = req.query.date;
+  if (!date) {
+    console.log(date)
+    date = today();
+  }
+  const data = await service.listForDate(date);
   res.json({ data });
 }
 
 module.exports = {
-  list,
+  create: [hasOnlyValidProperties, hasRequiredProperties, asyncErrorBoundary(create)],
+  list: asyncErrorBoundary(list),
 };
