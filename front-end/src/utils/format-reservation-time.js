@@ -5,6 +5,15 @@ function formatTime(reservation) {
   return reservation;
 }
 
+export function toStandardTime(militaryTime) {
+  const [hours, minutes, seconds] = militaryTime.split(':');
+  if (Number(hours) == 0) {
+    return `12:${minutes} AM`;
+  } else {
+    return `${(hours > 12) ? hours - 12 : hours}:${minutes} ${(hours >= 12) ? 'PM' : 'AM'}`;
+  }
+}
+
 /**
  * Formats the reservation_time property of a reservation.
  * @param reservations

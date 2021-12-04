@@ -3,6 +3,8 @@ import { getReservationsForDay, listReservations } from "../utils/api";
 import { next, previous, today } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
 import DashboardButtons from "./DashboardButtons";
+import ReservationsList from "../layout/reservations/ReservationsList";
+import { useHistory, useLocation } from "react-router-dom";
 
 /**
  * Defines the dashboard page.
@@ -11,6 +13,9 @@ import DashboardButtons from "./DashboardButtons";
  * @returns {JSX.Element}
  */
 function Dashboard({ date }) {
+  const history = useHistory();
+  const location = useLocation();
+
   const [day, setDay] = useState(date);
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
@@ -41,6 +46,13 @@ function Dashboard({ date }) {
     // listReservations({ date }, abortController.signal)
     //   .then(setReservations)
     //   .catch(setReservationsError);
+    if (location.search.length >= 15) {
+      const newDateIndex = location.search.indexOf("date=") + 5;
+      if (newDateIndex > 4 && newDateIndex <= location.search.length - 10) {
+        setDay(location.search.slice(newDateIndex, newDateIndex + 10));
+        location.search = "";
+      }
+    }
     getReservationsForDay(day)
       .then(setReservations)
       .catch(setReservationsError);
@@ -54,7 +66,7 @@ function Dashboard({ date }) {
         <h4 className="mb-0">Reservations for date</h4>
       </div>
       <ErrorAlert error={reservationsError} />
-      {JSON.stringify(reservations)}
+      <ReservationsList reservations={reservations.data} />
       <DashboardButtons 
         handleNext={handleNext}
         handlePrevious={handlePrevious}

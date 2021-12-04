@@ -28,7 +28,7 @@ function NewReservation() {
         console.log("Input\n", formData.first_name, formData.last_name, formData.mobile_number, 
             formData.reservation_date, formData.reservation_time, formData.people);
         // todo: post request and error handling with ErrorAlert.js
-        history.push("/dashboard");
+        history.push(`/dashboard?date=${formData.reservation_date}`);
     }
 
     return (
