@@ -55,8 +55,6 @@ async function fetchJson(url, options, onCancel) {
 }
 
 export async function getReservationsForDay(date) {
-  console.log(date);
-  console.log(`${API_BASE_URL}/reservations?date=${date}`)
   return axios
     .get(`${API_BASE_URL}/reservations?date=${date}`)
     .then((response) => {
@@ -81,4 +79,15 @@ export async function listReservations(params, signal) {
   return await fetchJson(url, { headers, signal }, [])
     .then(formatReservationDate)
     .then(formatReservationTime);
+}
+
+export async function postReservation(reservationData) {
+  return axios
+    .post(`${API_BASE_URL}/reservations/new`, reservationData)
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }

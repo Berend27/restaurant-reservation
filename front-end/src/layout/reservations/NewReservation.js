@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import ErrorAlert from "../ErrorAlert";
+import { postReservation } from "../../utils/api";
 import { useHistory } from "react-router-dom";
 
-function NewReservation() {
+function NewReservation({ updateTrigger, setUpdateTrigger }) {
 
     const history = useHistory();
 
@@ -15,6 +17,12 @@ function NewReservation() {
     }
 
     const [formData, setFormData] = useState({ ...initialFormState });
+    const [reservationError, setReservationError] = useState(null);
+
+    const displayReservation = (date) => {
+        setUpdateTrigger(!updateTrigger);
+        history.push(`/dashboard?date=${date}`);
+    }
 
     const handleChange = ({ target }) => {
         setFormData({
@@ -27,12 +35,25 @@ function NewReservation() {
         event.preventDefault();
         console.log("Input\n", formData.first_name, formData.last_name, formData.mobile_number, 
             formData.reservation_date, formData.reservation_time, formData.people);
-        // todo: post request and error handling with ErrorAlert.js
-        history.push(`/dashboard?date=${formData.reservation_date}`);
+        const reservationData = {
+            data : {
+                'first_name' : formData.first_name,
+                'last_name' : formData.last_name,
+                'mobile_number' : formData.mobile_number,
+                'reservation_date' : formData.reservation_date,
+                'reservation_time' : formData.reservation_time,
+                'people' : formData.people
+            }
+        };
+        // todo: The post is successful but the page needs to be reloaded in order to show it?
+        postReservation(reservationData)
+            .then(displayReservation(reservationData.data.reservation_date))
+            .catch(setReservationError);
     }
 
     return (
         <>
+            <ErrorAlert error={reservationError} />
             <h1>New Reservation</h1>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="first_name">

@@ -5,18 +5,23 @@ const today = require("../utils/today");
 
 // Validation
 
-const VALID_PROPERTIES = [
+const REQUIRED_PROPERTIES = [
   'first_name',
   'last_name',
   'mobile_number',
   'reservation_date',
   'reservation_time',
-  'people',
+  'people'
+];
+
+const VALID_PROPERTIES = [
+  ...REQUIRED_PROPERTIES,
+  'reservation_id',
   'created_at',
   'updated_at',
 ];
 
-const hasRequiredProperties = hasProperties(...VALID_PROPERTIES);
+const hasRequiredProperties = hasProperties(...REQUIRED_PROPERTIES);
 
 function hasOnlyValidProperties(req, res, next) {
   const { data = {} } = req.body;

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getReservationsForDay, listReservations } from "../utils/api";
+import { getReservationsForDay } from "../utils/api";
 import { next, previous, today } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
 import DashboardButtons from "./DashboardButtons";
 import ReservationsList from "../layout/reservations/ReservationsList";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 /**
  * Defines the dashboard page.
@@ -13,14 +13,13 @@ import { useHistory, useLocation } from "react-router-dom";
  * @returns {JSX.Element}
  */
 function Dashboard({ date }) {
-  const history = useHistory();
   const location = useLocation();
 
   const [day, setDay] = useState(date);
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
 
-  useEffect(loadDashboard, [day]);
+  useEffect(loadDashboard, [day, location]);
 
   const handleNext = () => {
     console.log("Next pressed");

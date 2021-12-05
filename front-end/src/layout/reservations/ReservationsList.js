@@ -4,8 +4,8 @@ import './ReservationsList.css';
 
 function ReservationsList({ reservations }) {
     if (reservations) {
-        const items = reservations.map((reservation, index) => {
-            return <li><Reservation reservation={reservation} /></li>
+        const items = reservations.map((reservation) => {
+            return <li key={reservation.reservation_id}><Reservation reservation={reservation} /></li>
         });
     
         return (
