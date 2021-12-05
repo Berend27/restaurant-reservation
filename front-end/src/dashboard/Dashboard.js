@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getReservationsForDay } from "../utils/api";
 import { next, previous, today } from "../utils/date-time";
-import ErrorAlert from "../layout/ErrorAlert";
-import DashboardButtons from "./DashboardButtons";
-import ReservationsList from "../layout/reservations/ReservationsList";
 import { useLocation } from "react-router-dom";
+import DashboardComponent from "./DashboardComponent";
 
 /**
  * Defines the dashboard page.
@@ -59,19 +57,13 @@ function Dashboard({ date }) {
   }
 
   return (
-    <main>
-      <h1>Dashboard</h1>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for date</h4>
-      </div>
-      <ErrorAlert error={reservationsError} />
-      <ReservationsList reservations={reservations.data} />
-      <DashboardButtons 
-        handleNext={handleNext}
-        handlePrevious={handlePrevious}
-        handleToday={handleToday}
-      />
-    </main>
+    <DashboardComponent 
+      handleNext={handleNext} 
+      handlePrevious={handlePrevious} 
+      handleToday={handleToday} 
+      reservations={reservations} 
+      reservationsError={reservationsError} 
+    />
   );
 }
 
