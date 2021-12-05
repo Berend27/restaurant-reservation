@@ -6,7 +6,7 @@ function Reservation({ reservation }) {
         <div>
             <h2>Reservation {reservation.reservation_id}</h2>
             <h3>Name</h3>
-            <p>{reservation.name}</p>
+            <p>{reservation.first_name} {reservation.last_name}</p>
             <h3>Mobile Number</h3>
             <p>{reservation.mobile_number}</p>
             <h3>Time &amp; Date</h3>
