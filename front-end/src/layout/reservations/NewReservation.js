@@ -57,7 +57,7 @@ function NewReservation({ updateTrigger, setUpdateTrigger }) {
             <form onSubmit={handleSubmit}>
                 <div className="form-row">
                     <div className="form-group col-md-6">
-                        <label for="first_name">First Name</label>
+                        <label htmlFor="first_name">First Name</label>
                         <input
                             className="form-control"
                             id="first_name"
@@ -69,7 +69,7 @@ function NewReservation({ updateTrigger, setUpdateTrigger }) {
                         />
                     </div>
                     <div className="form-group col-md-6">
-                        <label for="last_name">Last Name</label>
+                        <label htmlFor="last_name">Last Name</label>
                         <input
                             className="form-control"
                             id="last_name"
@@ -82,7 +82,7 @@ function NewReservation({ updateTrigger, setUpdateTrigger }) {
                     </div>
                 </div>
                 <div className="form-group">
-                    <label for="reservation_date">Reservation Date</label>
+                    <label htmlFor="reservation_date">Reservation Date</label>
                     <input 
                         className="form-control"
                         id="reservation_date"
@@ -96,7 +96,7 @@ function NewReservation({ updateTrigger, setUpdateTrigger }) {
                     />
                 </div>
                 <div className="form-group">
-                    <label for="reservation_time">Reservation Time</label>
+                    <label htmlFor="reservation_time">Reservation Time</label>
                     <input 
                         className="form-control"
                         id="reservation_time"
@@ -111,7 +111,7 @@ function NewReservation({ updateTrigger, setUpdateTrigger }) {
                 </div>
                 <div className="form-row">
                     <div className="form-group col-md-6">
-                        <label for="people">Number of People</label>
+                        <label htmlFor="people">Number of People</label>
                         <input 
                             className="form-control"
                             id="people"
@@ -124,7 +124,7 @@ function NewReservation({ updateTrigger, setUpdateTrigger }) {
                         />
                     </div>
                     <div className="form-group col-md-6">
-                        <label for="mobile_number">Mobile Number</label>
+                        <label htmlFor="mobile_number">Mobile Number</label>
                         <input
                             className="form-control"
                             id="mobile_number"
