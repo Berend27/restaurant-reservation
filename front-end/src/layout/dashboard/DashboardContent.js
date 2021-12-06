@@ -2,6 +2,7 @@ import React from "react";
 import DashboardButtons from "./DashboardButtons";
 import ErrorAlert from "../ErrorAlert";
 import { next, previous, today } from "../../utils/date-time";
+import { putYearLast } from "../../utils/format-reservation-date";
 import ReservationsList from "../reservations/ReservationsList";
 
 function DashboardContent({ day, setDay, reservations, reservationsError }) {
@@ -28,7 +29,7 @@ function DashboardContent({ day, setDay, reservations, reservationsError }) {
     <main>
       <h1>Dashboard</h1>
       <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for date</h4>
+        <h4 className="mb-0">Reservations for {putYearLast(day)}</h4>
       </div>
       <ErrorAlert error={reservationsError} />
       <ReservationsList reservations={reservations.data} />

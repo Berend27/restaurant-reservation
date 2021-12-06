@@ -43,7 +43,7 @@ function hasOnlyValidProperties(req, res, next) {
 function propertiesAreOfCorrectType(req, res, next) {
   const { data = {} } = req.body;
   
-  if (!Number.isFinite(data.people)) {
+  if (typeof data.people !== "number") {
     return next({
       status: 400,
       message: `The value for 'people' must be a number.`,

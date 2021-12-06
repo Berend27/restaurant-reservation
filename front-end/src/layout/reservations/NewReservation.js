@@ -42,10 +42,9 @@ function NewReservation({ updateTrigger, setUpdateTrigger }) {
                 'mobile_number' : formData.mobile_number,
                 'reservation_date' : formData.reservation_date,
                 'reservation_time' : formData.reservation_time,
-                'people' : formData.people
+                'people' : Number.parseInt(formData.people)
             }
         };
-        // todo: The post is successful but the page needs to be reloaded in order to show it?
         postReservation(reservationData)
             .then(displayReservation(reservationData.data.reservation_date))
             .catch(setReservationError);
