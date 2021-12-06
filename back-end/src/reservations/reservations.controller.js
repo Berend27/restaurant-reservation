@@ -1,6 +1,7 @@
 const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const hasProperties = require("../errors/hasProperties");
+const isTime = require("../utils/isTime");
 const today = require("../utils/today");
 
 // Validation
@@ -39,6 +40,33 @@ function hasOnlyValidProperties(req, res, next) {
   next();
 }
 
+function propertiesAreOfCorrectType(req, res, next) {
+  const { data = {} } = req.body;
+  
+  if (!Number.isFinite(data.people)) {
+    return next({
+      status: 400,
+      message: `The value for 'people' must be a number.`,
+    });
+  }
+
+  if (isNaN(new Date(data.reservation_date).getDate())) {
+    return next({
+      status: 400,
+      message: `'reservation_date' must be a valid date in the correct format YYYY-MM-DD`,
+    });
+  }
+
+  if (!isTime(data.reservation_time)) {
+    return next({
+      status: 400,
+      message: `'reservation_time' must be a valid date in the correct format HH:MM`,
+    });
+  }
+
+  next();
+}
+
 // Route Handlers
 
 async function create(req, res, next) {
@@ -62,6 +90,6 @@ async function list(req, res) {
 }
 
 module.exports = {
-  create: [hasOnlyValidProperties, hasRequiredProperties, asyncErrorBoundary(create)],
+  create: [hasOnlyValidProperties, hasRequiredProperties, propertiesAreOfCorrectType, asyncErrorBoundary(create)],
   list: asyncErrorBoundary(list),
 };

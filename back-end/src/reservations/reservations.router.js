@@ -12,6 +12,7 @@ const router = require("express").Router();
 router
     .route("/")
     .get(controller.list)
+    .post(controller.create)
     .all(methodNotAllowed);
 
 router
