@@ -79,10 +79,8 @@ async function create(req, res, next) {
  * List handler for reservation resources
  */
 async function list(req, res) {
-  console.log(req.query);
   let date = req.query.date;
   if (!date) {
-    console.log(date)
     date = today();
   }
   const data = await service.listForDate(date);
