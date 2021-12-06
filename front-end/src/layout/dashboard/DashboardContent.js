@@ -6,7 +6,7 @@ import { next, previous, today } from "../../utils/date-time";
 import { putYearLast } from "../../utils/format-reservation-date";
 import ReservationsList from "../reservations/ReservationsList";
 
-function DashboardContent({ day, setDay, reservations, reservationsError }) {
+function DashboardContent({ day, setDay, reservations = {}, reservationsError }) {
 
   const handleNext = () => {
     console.log("Next pressed");
