@@ -55,44 +55,36 @@ function NewReservation({ updateTrigger, setUpdateTrigger }) {
             <ErrorAlert error={reservationError} />
             <h1>New Reservation</h1>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="first_name">
-                    First Name:
-                    <input
-                        id="first_name"
-                        type="text"
-                        name="first_name"
-                        onChange={handleChange}
-                        value={formData.first_name}
-                        required
-                    />
-                </label>
-                <label htmlFor="last_name">
-                    Last Name:
-                    <input
-                        id="last_name"
-                        type="text"
-                        name="last_name"
-                        onChange={handleChange}
-                        value={formData.last_name}
-                        required
-                    />
-                </label>
-                <label htmlFor="mobile_number">
-                    Mobile Number:
-                    <input
-                        id="mobile_number"
-                        type="tel"
-                        name="mobile_number"
-                        onChange={handleChange}
-                        value={formData.mobile_number}
-                        // pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"  // todo: uncomment this?
-                        placeholder="###-###-####"
-                        required
-                    />
-                </label>
-                <label htmlFor="reservation_date">
-                    Reservation Date:
+                <div className="form-row">
+                    <div className="form-group col-md-6">
+                        <label for="first_name">First Name</label>
+                        <input
+                            className="form-control"
+                            id="first_name"
+                            type="text"
+                            name="first_name"
+                            onChange={handleChange}
+                            value={formData.first_name}
+                            required
+                        />
+                    </div>
+                    <div className="form-group col-md-6">
+                        <label for="last_name">Last Name</label>
+                        <input
+                            className="form-control"
+                            id="last_name"
+                            type="text"
+                            name="last_name"
+                            onChange={handleChange}
+                            value={formData.last_name}
+                            required
+                        />
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label for="reservation_date">Reservation Date</label>
                     <input 
+                        className="form-control"
                         id="reservation_date"
                         type="date"
                         name="reservation_date"
@@ -102,10 +94,11 @@ function NewReservation({ updateTrigger, setUpdateTrigger }) {
                         value={formData.reservation_date}
                         required
                     />
-                </label>
-                <label htmlFor="reservation_time">
-                    Reservation Time: 
+                </div>
+                <div className="form-group">
+                    <label for="reservation_time">Reservation Time</label>
                     <input 
+                        className="form-control"
                         id="reservation_time"
                         type="time"
                         name="reservation_time"
@@ -115,23 +108,45 @@ function NewReservation({ updateTrigger, setUpdateTrigger }) {
                         value={formData.reservation_time}
                         required
                     />
-                </label>
-                <label htmlFor="people">
-                    Number of People:
-                    <input 
-                        id="people"
-                        type="number"
-                        name="people"
-                        min="1"
-                        onChange={handleChange}
-                        value={formData.people}
-                        required
-                    />
-                </label>
-                <button type="submit">Submit</button>
+                </div>
+                <div className="form-row">
+                    <div className="form-group col-md-6">
+                        <label for="people">Number of People</label>
+                        <input 
+                            className="form-control"
+                            id="people"
+                            type="number"
+                            name="people"
+                            min="1"
+                            onChange={handleChange}
+                            value={formData.people}
+                            required
+                        />
+                    </div>
+                    <div className="form-group col-md-6">
+                        <label for="mobile_number">Mobile Number</label>
+                        <input
+                            className="form-control"
+                            id="mobile_number"
+                            type="tel"
+                            name="mobile_number"
+                            onChange={handleChange}
+                            value={formData.mobile_number}
+                            // pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"  // todo: uncomment this?
+                            placeholder="###-###-####"
+                            required
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
+                        <button type="submit" className="btn btn-secondary">Submit</button>
+                    </div>
+                    <div className="col pl-0">
+                        <button type="button" className="btn btn-secondary" onClick={() => history.goBack()}>Cancel</button>
+                    </div>
+                </div>
             </form>
-
-            <button type="button" onClick={() => history.goBack()}>Cancel</button>
         </>
     );
 }

@@ -1,10 +1,11 @@
 import React from "react";
+import "./Reservation.css";
 import { putYearLast } from "../../utils/format-reservation-date";
 import { toStandardTime } from "../../utils/format-reservation-time";
 
 function Reservation({ reservation }) {
     return (
-        <div className="card">
+        <div className="card bg-dark text-white">
             <div className="card-body">
                 <h2>Reservation {reservation.reservation_id}</h2>
                 <h3>Name</h3>

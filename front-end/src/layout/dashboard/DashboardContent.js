@@ -1,3 +1,4 @@
+import "./DashboardContent.css";
 import React from "react";
 import DashboardButtons from "./DashboardButtons";
 import ErrorAlert from "../ErrorAlert";
@@ -23,6 +24,10 @@ function DashboardContent({ day, setDay, reservations, reservationsError }) {
     console.log("Today pressed");
     setDay(today());
     document.getElementById("today").blur();
+  }
+
+  if (!day) {
+    setDay(today);
   }
 
   return (
