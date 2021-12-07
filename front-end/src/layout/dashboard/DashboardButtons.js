@@ -1,6 +1,5 @@
 import React from "react";
 
-// todo: next, previous, and today
 function DashboardButtons({ handleNext, handlePrevious, handleToday }) {
     return (
         <div>
