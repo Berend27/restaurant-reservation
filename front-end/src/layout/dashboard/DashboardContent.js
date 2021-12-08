@@ -2,12 +2,14 @@ import "./DashboardContent.css";
 import React from "react";
 import DashboardButtons from "./DashboardButtons";
 import ErrorAlert from "../ErrorAlert";
-import { next, previous, today } from "../../utils/date-time";
 import { putYearLast } from "../../utils/format-reservation-date";
 import ReservationsList from "../reservations/ReservationsList";
+const next = require("../../utils/date-time").next;
+const previous = require("../../utils/date-time").previous;
+const today = require("../../utils/date-time").today;
+
 
 function DashboardContent({ day, setDay, reservations = {}, reservationsError }) {
-
   const handleNext = () => {
     console.log("Next pressed");
     setDay(next(day));

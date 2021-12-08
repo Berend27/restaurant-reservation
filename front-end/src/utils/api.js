@@ -88,6 +88,7 @@ export async function postReservation(reservationData) {
       console.log(response);
     })
     .catch((error) => {
-      console.log(error);
+      error.message = error.response.data.error
+      throw error;
     });
 }

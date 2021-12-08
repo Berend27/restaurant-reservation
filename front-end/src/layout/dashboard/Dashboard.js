@@ -3,9 +3,9 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import NewReservation from "../reservations/NewReservation";
 import NotFound from "../NotFound";
 import { getReservationsForDay } from "../../utils/api";
-import { today } from "../../utils/date-time";
 import { useLocation } from "react-router-dom";
 import DashboardContent from "./DashboardContent";
+const today = require("../../utils/date-time").today;
 
 /**
  * Defines all the routes for the application.

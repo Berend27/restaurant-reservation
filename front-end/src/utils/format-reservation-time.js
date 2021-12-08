@@ -1,4 +1,16 @@
-import { formatAsTime } from "./date-time";
+// import { formatAsTime } from "./date-time";
+const timeFormat = /\d\d:\d\d/;
+
+/**
+ * Format a time string in HH:MM:SS format (which is what is returned from PostgreSQL) as HH:MM.
+ * @param timeString
+ *  HH:MM:SS time string
+ * @returns {*}
+ *  the specified time string formatted as YHH:MM.
+ */
+function formatAsTime(timeString) {
+  return timeString.match(timeFormat)[0];
+}
 
 function formatTime(reservation) {
   reservation.reservation_time = formatAsTime(reservation.reservation_time);

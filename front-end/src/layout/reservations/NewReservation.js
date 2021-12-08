@@ -46,10 +46,14 @@ function NewReservation({ updateTrigger, setUpdateTrigger }) {
             }
         };
         postReservation(reservationData)
-            .then(displayReservation(reservationData.data.reservation_date))
-            .catch(setReservationError);
+            .then(() => {
+                displayReservation(reservationData.data.reservation_date)
+            })
+            .catch((error) => {
+                setReservationError(error);
+            });
     }
-
+// <ErrorAlert error={reservationError} />
     return (
         <>
             <ErrorAlert error={reservationError} />
