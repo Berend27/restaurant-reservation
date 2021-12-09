@@ -21,14 +21,10 @@ function Dashboard() {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
 
-  useEffect(loadDashboard, [day, location, updateTrigger]);
+  useEffect(getDayFromQuery, [location, updateTrigger]);
+  useEffect(loadDashboard, [day]);
 
-  function loadDashboard() {
-    const abortController = new AbortController();
-    setReservationsError(null);
-    // listReservations({ date }, abortController.signal)
-    //   .then(setReservations)
-    //   .catch(setReservationsError);
+  function getDayFromQuery() {
     if (location.search.length >= 15) {
       const newDateIndex = location.search.indexOf("date=") + 5;
       if (newDateIndex > 4 && newDateIndex <= location.search.length - 10) {
@@ -36,8 +32,18 @@ function Dashboard() {
         location.search = "";
       }
     }
+  }
+
+  function loadDashboard() {
+    const abortController = new AbortController();
+    setReservationsError(null);
+    // listReservations({ date }, abortController.signal)
+    //   .then(setReservations)
+    //   .catch(setReservationsError);
     getReservationsForDay(day)
-      .then(setReservations)
+      .then((data) => {
+        setReservations(data)
+      })
       .catch(setReservationsError);
     return () => abortController.abort();
   }
