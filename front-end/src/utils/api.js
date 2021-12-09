@@ -84,9 +84,9 @@ export async function listReservations(params, signal) {
 export async function postReservation(reservationData) {
   return axios
     .post(`${API_BASE_URL}/reservations/new`, reservationData)
-    .then((response) => {
-      console.log(response);
-    })
+    // .then((response) => {
+    //   console.log(response);
+    // })
     .catch((error) => {
       error.message = error.response.data.error
       throw error;

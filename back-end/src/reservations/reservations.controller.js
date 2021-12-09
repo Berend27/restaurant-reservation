@@ -27,8 +27,6 @@ const dateIsValid = (req, res, next) => {
   const dateString = req.body.data.reservation_date;
   const timeString = req.body.data.reservation_time;
   let errorString = "";
-  console.log(dateString);
-  console.log(timeString);
   if (dateString && timeString) {
     const dateAndTime = dateString + "T" + timeString + ":00";
     const date = new Date(dateAndTime);

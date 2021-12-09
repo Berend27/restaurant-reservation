@@ -33,8 +33,6 @@ function NewReservation({ updateTrigger, setUpdateTrigger }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log("Input\n", formData.first_name, formData.last_name, formData.mobile_number, 
-            formData.reservation_date, formData.reservation_time, formData.people);
         const reservationData = {
             data : {
                 'first_name' : formData.first_name,
@@ -45,15 +43,43 @@ function NewReservation({ updateTrigger, setUpdateTrigger }) {
                 'people' : Number.parseInt(formData.people)
             }
         };
-        postReservation(reservationData)
+        if (reservationIsValid()) {
+            postReservation(reservationData)
             .then(() => {
                 displayReservation(reservationData.data.reservation_date)
             })
             .catch((error) => {
                 setReservationError(error);
             });
+        }
     }
-// <ErrorAlert error={reservationError} />
+
+    const reservationIsValid = () => {
+        const dateString = formData.reservation_date
+        const timeString = formData.reservation_time;
+        let errorString = "";
+        if (dateString && timeString) {
+            const dateAndTime = dateString + "T" + timeString + ":00";
+            const date = new Date(dateAndTime);
+            if (date.getDay() === 2) {
+                errorString += `Tuesday reservations aren't allowed as the restaurant is closed on Tuesdays.\n`;
+            }
+            if (Date.now() > date.getTime()) {
+                errorString += `The reservation date is in the past. Only future reservations are allowed.`;
+            }
+            
+            if (errorString) {
+                const error = new Error(errorString);
+                setReservationError(error);
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
+
     return (
         <>
             <ErrorAlert error={reservationError} />
