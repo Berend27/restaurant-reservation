@@ -25,6 +25,8 @@ const VALID_PROPERTIES = [
 const dateIsValid = (req, res, next) => {
   const dateString = req.body.data.reservation_date;
   const timeString = req.body.data.reservation_time;
+  const openingTimeString = "10:30";
+  const lastHourString = "21:30";
   let errorString = "";
   if (dateString && timeString) {
     const dateAndTime = dateString + "T" + timeString + ":00";
@@ -35,6 +37,9 @@ const dateIsValid = (req, res, next) => {
     if (Date.now() > date.getTime()) {
       errorString += `The reservation date is in the past. Only future reservations are allowed.`;
     }
+    if (!isEligibleTime(openingTimeString, lastHourString, date)) {
+      errorString += `The reservation must be between ${openingTimeString} and ${lastHourString} inclusive`;
+  }
     if (errorString) {
       return next({
         status: 400,
@@ -61,6 +66,25 @@ function hasOnlyValidProperties(req, res, next) {
     });
   }
   next();
+}
+
+const isEligibleTime = (firstString, lastString, date) => {
+  // firstString and lastString in format of HH:MM
+  const pattern = /[0-2][0-9]:[0-5][0-9]/;
+  if (!pattern.test(firstString) || !pattern.test(lastString)) {
+      throw new Error("firstString and lastString must both be of the format HH:MM");
+  }
+  const openingHour = Number.parseInt(firstString.slice(0, 2));
+  const openingMinute = Number.parseInt(firstString.slice(3, 5));
+  const openingDate = new Date(date);
+  openingDate.setHours(openingHour);
+  openingDate.setMinutes(openingMinute);
+  const closingHour = Number.parseInt(lastString.slice(0, 2));
+  const closingMinute = Number.parseInt(lastString.slice(3, 5));
+  const closingDate = new Date(date);
+  closingDate.setHours(closingHour);
+  closingDate.setMinutes(closingMinute);
+  return (date.getTime() <= closingDate.getTime() && date.getTime() >= openingDate.getTime());
 }
 
 function propertiesAreOfCorrectType(req, res, next) {
