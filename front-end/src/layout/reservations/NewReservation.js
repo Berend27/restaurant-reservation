@@ -54,6 +54,7 @@ function NewReservation({ updateTrigger, setUpdateTrigger }) {
         }
     }
 
+    // todo: time zone check
     const reservationIsValid = () => {
         const dateString = formData.reservation_date
         const timeString = formData.reservation_time;
