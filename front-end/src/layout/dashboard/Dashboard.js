@@ -5,7 +5,7 @@ import NotFound from "../NotFound";
 import { getReservationsForDay } from "../../utils/api";
 import { useLocation } from "react-router-dom";
 import DashboardContent from "./DashboardContent";
-const today = require("../../utils/date-time").today;
+import { today } from "../../utils/date-time";
 
 /**
  * Defines all the routes for the application.

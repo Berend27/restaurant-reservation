@@ -1,5 +1,3 @@
-// const timeFormat = /\d\d:\d\d/;
-// delete this comment
 /**
  * Formats a Date object as YYYY-MM-DD.
  *
@@ -73,4 +71,4 @@ function today() {
   return asDateString(new Date());
 }
 
-module.exports = { next, previous, today };
+export { next, previous, today };
