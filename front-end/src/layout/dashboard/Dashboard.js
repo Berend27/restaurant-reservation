@@ -21,11 +21,11 @@ function Dashboard() {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
 
-  useEffect(getDayFromQuery, [location, updateTrigger]);
-  useEffect(loadDashboard, [day]);
+  useEffect(getDayFromQuery, [location]);
+  useEffect(loadDashboard, [day, updateTrigger]);
 
   function getDayFromQuery() {
-    if (location.search.length >= 15) {
+    if (location.search.includes("date=")) {
       const newDateIndex = location.search.indexOf("date=") + 5;
       if (newDateIndex > 4 && newDateIndex <= location.search.length - 10) {
         setDay(location.search.slice(newDateIndex, newDateIndex + 10));
