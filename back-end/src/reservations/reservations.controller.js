@@ -116,15 +116,12 @@ function propertiesAreOfCorrectType(req, res, next) {
 
 // Route Handlers
 
-async function create(req, res, next) {
+async function create(req, res) {
   const data = await service 
     .create(req.body.data);
     res.status(201).json({ data });
 }
 
-/**
- * List handler for reservation resources
- */
 async function list(req, res) {
   let date = req.query.date;
   if (!date) {
