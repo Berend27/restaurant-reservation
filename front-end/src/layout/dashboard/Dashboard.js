@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import NewReservation from "../reservations/NewReservation";
+import NewTable from "../tables/NewTable";
 import NotFound from "../NotFound";
 import { getReservationsForDay } from "../../utils/api";
 import { useLocation } from "react-router-dom";
@@ -58,6 +59,9 @@ function Dashboard() {
       </Route>
       <Route path="/reservations/new">
         <NewReservation updateTrigger={updateTrigger} setUpdateTrigger={setUpdateTrigger} />
+      </Route>
+      <Route path="/tables/new">
+        <NewTable updateTrigger={updateTrigger} setUpdateTrigger={setUpdateTrigger} />
       </Route>
       <Route path="/dashboard">
         <DashboardContent 

@@ -46,7 +46,7 @@ function NewReservation({ updateTrigger, setUpdateTrigger }) {
         if (reservationIsValid()) {
             postReservation(reservationData)
             .then(() => {
-                displayReservation(reservationData.data.reservation_date)
+                displayReservation(reservationData.data.reservation_date);
             })
             .catch((error) => {
                 setReservationError(error);
