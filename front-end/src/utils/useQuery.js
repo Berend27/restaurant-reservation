@@ -6,7 +6,7 @@
  *     const query = useQuery();
  *     const date = query.get("date")
  */
-
+// todo: use this
 import { useLocation } from "react-router-dom";
 
 function useQuery() {

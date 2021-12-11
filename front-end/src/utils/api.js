@@ -94,10 +94,10 @@ export async function postReservation(reservationData) {
 }
 
 export async function postTable(tableData) {
-  // return axios
-  //   .post(`${API_BASE_URL}/tables/new`, tableData)
-  //   .catch((error) => {
-  //     error.message = error.response.data.error;
-  //     throw error;
-  //   });
+  return axios
+    .post(`${API_BASE_URL}/tables/new`, tableData)
+    .catch((error) => {
+      error.message = error.response.data.error;
+      throw error;
+    });
 }

@@ -1,6 +1,4 @@
-// form with two required fields: table_name and capacity
-// capacity takes a number with a minimum value of 1
-// Also has both a Submit button and a Cancel button
+// form component for creating a new table
 
 import React, { useState } from "react";
 import ErrorAlert from "../ErrorAlert";
@@ -36,10 +34,10 @@ function NewTable({ updateTrigger, setUpdateTrigger }) {
         const tableData = {
             data : {
                 'table_name' : formData.table_name,
-                'capacity' : formData.capacity,
+                'capacity' : Number.parseInt(formData.capacity),
             }
         };
-        if (tableIsValid()) {
+        if (tableIsValid(tableData.data)) {
             postTable(tableData)
             .then(() => {
                 goToUpdatedDashboard();
@@ -50,8 +48,18 @@ function NewTable({ updateTrigger, setUpdateTrigger }) {
         }
     }
 
-    const tableIsValid = () => {
-        return true;
+    const tableIsValid = (table) => {
+        let errorString = "";
+        if (table.table_name.length < 2) {
+            errorString += "Table Name must be atleast two characters long.";
+        }
+        if (errorString) {
+            const error = new Error(errorString);
+            setTableError(error);
+            return false;
+        } else {
+            return true;
+        }
     }
 
     return (
