@@ -15,6 +15,7 @@ function asDateString(date) {
     .padStart(2, "0")}-${date.getDate().toString(10).padStart(2, "0")}`;
 }
 
+// todo: delete this commented out code?
 // /**
 //  * Format a time string in HH:MM:SS format (which is what is returned from PostgreSQL) as HH:MM.
 //  * @param timeString

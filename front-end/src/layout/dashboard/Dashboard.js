@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import DashboardContent from "./DashboardContent";
 import NewReservation from "../reservations/NewReservation";
 import NewTable from "../tables/NewTable";
 import NotFound from "../NotFound";
+import useQuery from "../../utils/useQuery";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { getReservationsForDay } from "../../utils/api";
-import { useLocation } from "react-router-dom";
-import DashboardContent from "./DashboardContent";
 import { today } from "../../utils/date-time";
+import { useLocation } from "react-router-dom";
 
 /**
  * Defines all the routes for the application.
@@ -17,21 +18,19 @@ function Dashboard() {
   const [updateTrigger, setUpdateTrigger] = useState(false);
 
   const location = useLocation();
+  const queryParameters = useQuery();
 
   const [day, setDay] = useState(today());
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
 
-  useEffect(getDayFromQuery, [location]);
+  useEffect(getDayFromQuery, [location, queryParameters]);
   useEffect(loadDashboard, [day, updateTrigger]);
 
   function getDayFromQuery() {
-    if (location.search.includes("date=")) {
-      const newDateIndex = location.search.indexOf("date=") + 5;
-      if (newDateIndex > 4 && newDateIndex <= location.search.length - 10) {
-        setDay(location.search.slice(newDateIndex, newDateIndex + 10));
-        location.search = "";
-      }
+    if (queryParameters.has('date')) {
+      setDay(queryParameters.get('date'));
+      location.search="";
     }
   }
 
