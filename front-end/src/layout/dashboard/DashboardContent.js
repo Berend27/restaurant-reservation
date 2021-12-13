@@ -2,15 +2,13 @@ import "./DashboardContent.css";
 import React from "react";
 import DashboardButtons from "./DashboardButtons";
 import ErrorAlert from "../ErrorAlert";
-import { putYearLast } from "../../utils/format-reservation-date";
 import ReservationsList from "../reservations/ReservationsList";
-// const next = require("../../utils/date-time").next;
-// const previous = require("../../utils/date-time").previous;
-// const today = require("../../utils/date-time").today;
+import TablesList from "../tables/TablesList";
 import { next, previous, today } from "../../utils/date-time";
+import { putYearLast } from "../../utils/format-reservation-date";
 
 
-function DashboardContent({ day, setDay, reservations = {}, reservationsError }) {
+function DashboardContent({ day, setDay, reservations = {}, reservationsError, tables = {}, tablesError }) {
   const handleNext = () => {
     console.log("Next pressed");
     setDay(next(day));
@@ -36,11 +34,19 @@ function DashboardContent({ day, setDay, reservations = {}, reservationsError })
   return (
     <main>
       <h1>Dashboard</h1>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for {putYearLast(day)}</h4>
-      </div>
       <ErrorAlert error={reservationsError} />
-      <ReservationsList reservations={reservations.data} />
+      <ErrorAlert error={tablesError} />
+      <div className="row" >
+        <div className="col-md-6" >
+          <div className="d-md-flex mb-3">
+            <h4 className="mb-0">Reservations for {putYearLast(day)}</h4>
+          </div>
+          <ReservationsList reservations={reservations.data} />
+        </div>
+        <div className="col-md-6" >
+          <TablesList tables={tables.data} />
+        </div>
+      </div>
       <DashboardButtons 
         handleNext={handleNext}
         handlePrevious={handlePrevious}

@@ -14,6 +14,9 @@ function Reservation({ reservation }) {
                 <p>{reservation.mobile_number}</p>
                 <h3>Time &amp; Date</h3>
                 <p>{toStandardTime(reservation.reservation_time)} on {putYearLast(reservation.reservation_date)}</p>
+                <a href={`/reservations/${reservation.reservation_id}/seat`}>  {/* todo: try just reservation_id if tests fail */}
+                    <button type="button" className="btn btn-primary">Seat</button>
+                </a>
             </div>
         </div>
     );

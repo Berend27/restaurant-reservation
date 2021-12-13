@@ -31,6 +31,7 @@ headers.append("Content-Type", "application/json");
  *  a promise that resolves to the `json` data or an error.
  *  If the response is not in the 200 - 399 range the promise is rejected.
  */
+// todo: use or delete this
 async function fetchJson(url, options, onCancel) {
   try {
     const response = await fetch(url, options);
@@ -70,7 +71,7 @@ export async function getReservationsForDay(date) {
  * @returns {Promise<[reservation]>}
  *  a promise that resolves to a possibly empty array of reservation saved in the database.
  */
-
+// todo: delete this?
 export async function listReservations(params, signal) {
   const url = new URL(`${API_BASE_URL}/reservations`);
   Object.entries(params).forEach(([key, value]) =>
@@ -79,6 +80,17 @@ export async function listReservations(params, signal) {
   return await fetchJson(url, { headers, signal }, [])
     .then(formatReservationDate)
     .then(formatReservationTime);
+}
+
+export async function listTables() {
+  return axios 
+    .get(`${API_BASE_URL}/tables`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error.message);  // todo: use something instead of console.log()?
+    })
 }
 
 export async function postReservation(reservationData) {

@@ -5,7 +5,7 @@ import NewTable from "../tables/NewTable";
 import NotFound from "../NotFound";
 import useQuery from "../../utils/useQuery";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { getReservationsForDay } from "../../utils/api";
+import { getReservationsForDay, listTables } from "../../utils/api";
 import { today } from "../../utils/date-time";
 import { useLocation } from "react-router-dom";
 
@@ -23,9 +23,12 @@ function Dashboard() {
   const [day, setDay] = useState(today());
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
+  const [tables, setTables] = useState({});
+  const [tablesError, setTablesError] = useState(null);
 
   useEffect(getDayFromQuery, [location, queryParameters]);
   useEffect(loadDashboard, [day, updateTrigger]);
+  useEffect(loadTables, []);
 
   function getDayFromQuery() {
     if (queryParameters.has('date')) {
@@ -45,6 +48,17 @@ function Dashboard() {
         setReservations(data)
       })
       .catch(setReservationsError);
+    return () => abortController.abort();
+  }
+
+  function loadTables() {
+    const abortController = new AbortController();
+    setTablesError(null);
+    listTables()
+      .then((data) => {
+        setTables(data)
+      })
+      .catch(setTablesError);
     return () => abortController.abort();
   }
 
@@ -68,6 +82,8 @@ function Dashboard() {
           setDay={setDay} 
           reservations={reservations} 
           reservationsError={reservationsError} 
+          tables={tables}
+          tablesError={tablesError}
         />
       </Route>
       <Route>
