@@ -10,8 +10,7 @@ function TablesList({ tables }) {
 
         return (
             <div>
-                {/* todo: Maybe move this div with the h4 back to DashboardContent */}
-                <div className="mb-3">
+                <div className="mb-3 column-header">
                     <h4 className="mb-0 centered">Tables</h4>
                 </div>
                 <ul>{items}</ul>

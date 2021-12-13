@@ -38,8 +38,8 @@ function DashboardContent({ day, setDay, reservations = {}, reservationsError, t
       <ErrorAlert error={tablesError} />
       <div className="row" >
         <div className="col-md-6" >
-          <div className="d-md-flex mb-3">
-            <h4 className="mb-0">Reservations for {putYearLast(day)}</h4>
+          <div className="mb-3 column-header">
+            <h4 className="mb-0 centered">Reservations for {putYearLast(day)}</h4>
           </div>
           <ReservationsList reservations={reservations.data} />
         </div>
