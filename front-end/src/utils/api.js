@@ -55,6 +55,10 @@ async function fetchJson(url, options, onCancel) {
   }
 }
 
+export function getReservation(id) {
+  // todo:
+}
+
 export async function getReservationsForDay(date) {
   return axios
     .get(`${API_BASE_URL}/reservations?date=${date}`)

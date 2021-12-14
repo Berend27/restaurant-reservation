@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DashboardContent from "./DashboardContent";
 import NewReservation from "../reservations/NewReservation";
+import NewSeating from "../reservations/NewSeating";
 import NewTable from "../tables/NewTable";
 import NotFound from "../NotFound";
 import useQuery from "../../utils/useQuery";
@@ -23,7 +24,7 @@ function Dashboard() {
   const [day, setDay] = useState(today());
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
-  const [tables, setTables] = useState({});
+  const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState(null);
 
   useEffect(getDayFromQuery, [location, queryParameters]);
@@ -55,8 +56,10 @@ function Dashboard() {
     const abortController = new AbortController();
     setTablesError(null);
     listTables()
-      .then((data) => {
-        setTables(data)
+      .then((response) => {
+        if (response.data) {
+          setTables(response.data);
+        } 
       })
       .catch(setTablesError);
     return () => abortController.abort();
@@ -72,6 +75,9 @@ function Dashboard() {
       </Route>
       <Route path="/reservations/new">
         <NewReservation updateTrigger={updateTrigger} setUpdateTrigger={setUpdateTrigger} />
+      </Route>
+      <Route path="/reservations/:reservation_id/seat">
+        <NewSeating tables={tables} />
       </Route>
       <Route path="/tables/new">
         <NewTable updateTrigger={updateTrigger} setUpdateTrigger={setUpdateTrigger} />

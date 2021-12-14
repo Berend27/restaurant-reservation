@@ -114,6 +114,15 @@ function propertiesAreOfCorrectType(req, res, next) {
   next();
 }
 
+async function reservationExists(req, res, next) {
+  const reservation = await service.read(req.params.reservation_id);
+  if (reservation) {
+    res.locals.reservation = reservation;
+    return next();
+  }
+  next({ status: 404, message: `Reservation not found` });
+}
+
 // Route Handlers
 
 async function create(req, res) {
@@ -131,6 +140,10 @@ async function list(req, res) {
   res.json({ data });
 }
 
+function read(req, res) {
+  res.json({ data: res.locals.reservation });
+}
+
 module.exports = {
   create: [
     hasOnlyValidProperties, 
@@ -140,4 +153,5 @@ module.exports = {
     asyncErrorBoundary(create)
   ],
   list: asyncErrorBoundary(list),
+  read: [reservationExists, read],
 };

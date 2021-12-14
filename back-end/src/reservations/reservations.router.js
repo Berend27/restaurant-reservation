@@ -15,6 +15,11 @@ router
     .all(methodNotAllowed);
 
 router
+    .route("/:reservation_id")
+    .get(controller.read)
+    .all(methodNotAllowed);
+
+router
     .route("/new")
     .post(controller.create)
     .all(methodNotAllowed);
