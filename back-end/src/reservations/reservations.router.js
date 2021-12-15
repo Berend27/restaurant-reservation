@@ -14,14 +14,15 @@ router
     .post(controller.create)
     .all(methodNotAllowed);
 
+router  
+    .route("/new")
+    .post(controller.create)
+    .all(methodNotAllowed);
+
+    // todo: change this route?
 router
     .route("/:reservation_id")
     .get(controller.read)
-    .all(methodNotAllowed);
-
-router
-    .route("/new")
-    .post(controller.create)
     .all(methodNotAllowed);
 
 module.exports = router;

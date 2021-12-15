@@ -1,30 +1,52 @@
 import React, { useState } from "react";
 import ErrorAlert from "../ErrorAlert";
+import { getReservation } from "../../utils/api";
+import { useHistory, useParams } from "react-router-dom";
 
-import { useHistory } from "react-router-dom";
-
-function NewSeating({ reservation, tables }) {
+function NewSeating({ tables }) {
     const history = useHistory();
+    const { reservation_id } = useParams();
 
-    const [selected, setSelected] = useState("");
+    const [selectedIdString, setSelected] = useState("");
     const [seatingError, setSeatingError] = useState(null);
 
-    const handleSubmit = (event) => {
+    const checkCapacity = async (capacity) => {
+        const { data: reservation } = await getReservation(reservation_id);
+        const people = reservation.people;
+        console.log(people);
+        return people <= capacity;
+    }
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        const capacityIndex = selected.lastIndexOf("-") + 2;
-        if (capacityIndex > 1 && selected.length > 2) {
-            const capacity = Number.parseInt(selected.slice(capacityIndex));
+        // const capacityIndex = selected.lastIndexOf("-") + 2;
+        // if (capacityIndex > 1 && selected.length > 2) {
+        //     const capacity = Number.parseInt(selected.slice(capacityIndex));
+        // }
+        // console.log("selected");
+        // console.log(typeof selectedIdString);
+        // console.log(selectedIdString);
+        const table = tables.find((table) => table.table_id === Number.parseInt(selectedIdString));
+        if (table && await checkCapacity(table.capacity)) {
+            console.log("reservation is valid")
+        } else {
+            console.log("capacity exceeded");
         }
     }
 
-    const handleTableChange = (event) => setSelected(event.target.value);
+    const handleTableChange = (event) => { 
+        const selectedIndex = event.target.options.selectedIndex;
+        setSelected(event.target.options[selectedIndex].getAttribute('table_id'))
+    };
 
     if (tables) {
+        if (tables.length > 0 && !selectedIdString) {
+            setSelected(tables[0].table_id)
+        }
         const options = tables.map((table) => {
-            return <option key={table.table_id}>{table.table_name} - {table.capacity}</option>
+            return <option key={table.table_id} table_id={table.table_id}>{table.table_name} - {table.capacity}</option>
         });
     
-
         return (
             <div>
                 <ErrorAlert error={seatingError} />
@@ -41,11 +63,11 @@ function NewSeating({ reservation, tables }) {
                                 {options}
                         </select>
                     </div>
+                    <div>
+                        <button type="submit" className="btn btn-secondary">Submit</button>
+                        <button type="button" className="btn btn-secondary" onClick={() => history.goBack()}>Cancel</button>
+                    </div>
                 </form>
-                <div>
-                    <button type="submit" className="btn btn-secondary">Submit</button>
-                    <button type="button" className="btn btn-secondary" onClick={() => history.goBack()}>Cancel</button>
-                </div>
             </div>
         );
     }

@@ -56,7 +56,14 @@ async function fetchJson(url, options, onCancel) {
 }
 
 export function getReservation(id) {
-  // todo:
+  return axios 
+    .get(`${API_BASE_URL}/reservations/${id}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
 }
 
 export async function getReservationsForDay(date) {
