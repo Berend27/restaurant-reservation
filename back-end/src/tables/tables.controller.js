@@ -57,6 +57,19 @@ const propertiesAreOfCorrectType = (req, res, next) => {
     next();
 }
 
+const tableExists = (req, res, next) => {
+  service
+    .read(req.params.table_id)
+    .then((table) => {
+      if (table) {
+        res.locals.table = table;
+        return next();
+      }
+      next({ status: 404, message: `Table not found` });
+    })
+    .catch(next);
+}
+
 // Route Handlers
 
 async function create(req, res) {
@@ -70,6 +83,16 @@ async function list(req, res) {
     res.json({ data });
 }
 
+async function update(req, res, next) {
+  const updatedTable = {
+    ...res.locals.table,
+    ...req.body.data,
+    table_id: res.locals.table.table_id,
+  };
+  const data = await service.update(updatedTable);
+  res.json({ data });
+}
+
 module.exports = {
     create: [
         hasOnlyValidProperties,
@@ -79,4 +102,8 @@ module.exports = {
         asyncErrorBoundary(create)
     ],
     list: asyncErrorBoundary(list),
+    update: [
+      asyncErrorBoundary(tableExists),
+      asyncErrorBoundary(update)
+    ],
 };

@@ -41,7 +41,8 @@ function NewSeating({ tables }) {
         if (table && await checkCapacity(table.capacity)) {
             // todo
             console.log("reservation is valid")
-            // todo: post to seatings
+            // possible later todo: post to seatings
+            // todo: put to tables with {data: {reservation_id}} at /tables/:table_id/seat
             // todo: return to dashboard
         } else {
             setSeatingError(new Error(`Insufficient table capacity`));
