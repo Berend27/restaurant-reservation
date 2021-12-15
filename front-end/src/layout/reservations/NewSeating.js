@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ErrorAlert from "../ErrorAlert";
 import { getReservation } from "../../utils/api";
 import { useHistory, useParams } from "react-router-dom";
@@ -7,14 +7,25 @@ function NewSeating({ tables }) {
     const history = useHistory();
     const { reservation_id } = useParams();
 
+    const [reservation, setReservation] = useState({});
     const [selectedIdString, setSelected] = useState("");
     const [seatingError, setSeatingError] = useState(null);
 
     const checkCapacity = async (capacity) => {
-        const { data: reservation } = await getReservation(reservation_id);
         const people = reservation.people;
         console.log(people);
         return people <= capacity;
+    }
+
+    const loadReservation = () => {
+        const abortController = new AbortController();
+        setSeatingError(null);
+        getReservation(reservation_id)
+            .then((response) => {
+                setReservation(response.data);
+            })
+            .catch(setSeatingError);
+        return () => abortController.abort();
     }
 
     const handleSubmit = async (event) => {
@@ -28,11 +39,16 @@ function NewSeating({ tables }) {
         // console.log(selectedIdString);
         const table = tables.find((table) => table.table_id === Number.parseInt(selectedIdString));
         if (table && await checkCapacity(table.capacity)) {
+            // todo
             console.log("reservation is valid")
+            // todo: post to seatings
+            // todo: return to dashboard
         } else {
-            console.log("capacity exceeded");
+            setSeatingError(new Error(`Insufficient table capacity`));
         }
     }
+
+    useEffect(loadReservation, [reservation_id]);
 
     const handleTableChange = (event) => { 
         const selectedIndex = event.target.options.selectedIndex;
