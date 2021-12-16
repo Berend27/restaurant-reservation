@@ -3,7 +3,7 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const hasProperties = require("../errors/hasProperties");
 
 // Validation
-
+// todo: Validation for criterion 5 of story 4
 const REQUIRED_PROPERTIES = [
     'table_name',
     'capacity',
