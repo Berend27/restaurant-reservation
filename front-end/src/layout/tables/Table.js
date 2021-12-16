@@ -1,12 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 
 function Table({ table }) {
-
-    const [status, setStatus] = useState("Free");
-
-    if (table.reservation_id !== null) {
-        setStatus("Occupied")
-    }
+    const status = table.reservation_id ? "Occupied" : "Free"
 
     return (
         <div className="card bg-dark text-white">

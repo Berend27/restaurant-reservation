@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import ErrorAlert from "../ErrorAlert";
-import { getReservation } from "../../utils/api";
+import { getReservation, putTable } from "../../utils/api";
 import { useHistory, useParams } from "react-router-dom";
 
-function NewSeating({ tables }) {
+function NewSeating({ tables, updateTrigger, setUpdateTrigger }) {
     const history = useHistory();
     const { reservation_id } = useParams();
 
@@ -43,7 +43,12 @@ function NewSeating({ tables }) {
             console.log("reservation is valid")
             // possible later todo: post to seatings
             // todo: put to tables with {data: {reservation_id}} at /tables/:table_id/seat
-            // todo: return to dashboard
+            putTable({ data: { reservation_id: reservation_id } }, table.table_id)
+                .then(() => {
+                    setUpdateTrigger(!updateTrigger);
+                    history.push("/dashboard");
+                })
+                .catch(setSeatingError);
         } else {
             setSeatingError(new Error(`Insufficient table capacity`));
         }

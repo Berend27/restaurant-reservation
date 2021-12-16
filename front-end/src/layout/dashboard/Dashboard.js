@@ -29,7 +29,7 @@ function Dashboard() {
 
   useEffect(getDayFromQuery, [location, queryParameters]);
   useEffect(loadDashboard, [day, updateTrigger]);
-  useEffect(loadTables, []);
+  useEffect(loadTables, [updateTrigger]);
 
   function getDayFromQuery() {
     if (queryParameters.has('date')) {
@@ -77,7 +77,7 @@ function Dashboard() {
         <NewReservation updateTrigger={updateTrigger} setUpdateTrigger={setUpdateTrigger} />
       </Route>
       <Route path="/reservations/:reservation_id/seat">
-        <NewSeating tables={tables} />
+        <NewSeating tables={tables} updateTrigger={updateTrigger} setUpdateTrigger={setUpdateTrigger} />
       </Route>
       <Route path="/tables/new">
         <NewTable updateTrigger={updateTrigger} setUpdateTrigger={setUpdateTrigger} />

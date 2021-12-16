@@ -124,3 +124,12 @@ export async function postTable(tableData) {
       throw error;
     });
 }
+
+export async function putTable(data, tableId) {
+  return axios 
+    .put(`${API_BASE_URL}/tables/${tableId}/seat`, data)
+    .catch((error) => {
+      error.message = error.response.data.error;
+      throw error;
+    });
+}
