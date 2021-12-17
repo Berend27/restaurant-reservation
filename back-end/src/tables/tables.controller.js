@@ -1,4 +1,5 @@
-const service = require("./tables.service");
+const reservationsService = require("../reservations/reservations.service");
+const tablesService = require("./tables.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const hasProperties = require("../errors/hasProperties");
 
@@ -13,7 +14,21 @@ const VALID_PROPERTIES = [
     ...REQUIRED_PROPERTIES,
     'reservation_id',
     'table_id',
+    'created_at',
+    'updated_at',
 ];
+
+const capacityIsAdequate = (req, res, next) => {
+  const reservation = res.locals.reservation; 
+  const table = res.locals.table;
+  if (reservation.people > table.capacity) {
+    return next({
+      status: 400,
+      message: `Insufficient table capacity for this reservation`
+    });
+  }
+  next();
+}
 
 const capacityIsAtleast1 = (req, res, next) => {
     const { data = {} } = req.body;
@@ -26,9 +41,17 @@ const capacityIsAtleast1 = (req, res, next) => {
     next();
 }
 
-const hasRequiredProperties = hasProperties(...REQUIRED_PROPERTIES);
+const hasData = (req, res, next) => {
+  if (!('data' in req.body)) {
+    return next({
+      status: 400,
+      message: `The request is missing a 'data' property.`
+    });
+  }
+  next();
+};
 
-const hasOnlyValidProperties = (req, res, next) => {
+function hasOnlyValidProperties(req, res, next) {
   const { data = {} } = req.body;
 
   const invalidFields = Object.keys(data).filter(
@@ -44,6 +67,8 @@ const hasOnlyValidProperties = (req, res, next) => {
   next();
 }
 
+const hasRequiredProperties = hasProperties(...REQUIRED_PROPERTIES)
+
 const propertiesAreOfCorrectType = (req, res, next) => {
     const { data = {} } = req.body;
     
@@ -57,9 +82,30 @@ const propertiesAreOfCorrectType = (req, res, next) => {
     next();
 }
 
+const reservationExists = async (req, res, next) => {
+  const { data = {} } = req.body;
+  const reservation_id = data.reservation_id;
+  if (reservation_id) {
+    const reservation = await reservationsService.read(reservation_id);
+    if (reservation) {
+      res.locals.reservation = reservation;
+      return next();
+    }
+    return next({
+      status: 404,
+      message: `The reservation_id ${reservation_id} does not exist.`
+    });
+  }
+  next({
+    status: 400,
+    message: `The request is missing a 'reservation_id' property.` 
+  });
+}
+
 const tableExists = (req, res, next) => {
-  service
-    .read(req.params.table_id)
+  const id = req.params.table_id;
+  tablesService
+    .read(id)
     .then((table) => {
       if (table) {
         res.locals.table = table;
@@ -70,16 +116,38 @@ const tableExists = (req, res, next) => {
     .catch(next);
 }
 
+const tableIsFree = (req, res, next) => {
+  const table = res.locals.table;
+  if (table.reservation_id !== null) {
+    return next({
+      status: 400,
+      message: `This table is currently occupied.`,
+    });
+  }
+  next();
+}
+
+const tableNameIsMoreThanOneCharacter = (req, res, next) => {
+  const { data = {} } = req.body;
+  if (data.table_name.length < 2) {
+    return next({
+      status: 400,
+      message: `table_name must be atleast two characters`
+    });
+  }
+  next();
+}
+
 // Route Handlers
 
 async function create(req, res) {
-    const data = await service 
+    const data = await tablesService 
         .create(req.body.data);
         res.status(201).json({ data });
 }
 
 async function list(req, res) {
-    const data = await service.list();
+    const data = await tablesService.list();
     res.json({ data });
 }
 
@@ -89,21 +157,28 @@ async function update(req, res, next) {
     ...req.body.data,
     table_id: res.locals.table.table_id,
   };
-  const data = await service.update(updatedTable);
-  res.json({ data });
+  const data = await tablesService.update(updatedTable);
+  res.status(200).json({ data });
 }
 
 module.exports = {
     create: [
-        hasOnlyValidProperties,
+        hasData,
         hasRequiredProperties,
+        hasOnlyValidProperties,
         propertiesAreOfCorrectType,
         capacityIsAtleast1,
+        tableNameIsMoreThanOneCharacter,
         asyncErrorBoundary(create)
     ],
     list: asyncErrorBoundary(list),
     update: [
+      hasData,
       asyncErrorBoundary(tableExists),
+      reservationExists,
+      capacityIsAdequate,
+      capacityIsAtleast1,
+      tableIsFree,
       asyncErrorBoundary(update)
     ],
 };

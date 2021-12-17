@@ -50,6 +50,19 @@ const dateIsValid = (req, res, next) => {
   next();
 }
 
+const hasPeople = (req, res, next) => {
+  const { data = {} } = req.body;
+
+  if (!data.people) {
+    return next ({
+      status: 400,
+      message: `The value for people must be 1 or greater.`
+    });
+  }
+
+  next();
+}
+
 const hasRequiredProperties = hasProperties(...REQUIRED_PROPERTIES);
 
 function hasOnlyValidProperties(req, res, next) {
@@ -115,12 +128,13 @@ function propertiesAreOfCorrectType(req, res, next) {
 }
 
 async function reservationExists(req, res, next) {
-  const reservation = await service.read(req.params.reservation_id);
+  const id = req.params.reservation_id;
+  const reservation = await service.read(id);
   if (reservation) {
     res.locals.reservation = reservation;
     return next();
   }
-  next({ status: 404, message: `Reservation not found` });
+  next({ status: 404, message: `Reservation with a reservation_id of ${id} not found` });
 }
 
 // Route Handlers
@@ -149,9 +163,13 @@ module.exports = {
     hasOnlyValidProperties, 
     hasRequiredProperties, 
     propertiesAreOfCorrectType, 
+    hasPeople,
     dateIsValid,
     asyncErrorBoundary(create)
   ],
   list: asyncErrorBoundary(list),
-  read: [reservationExists, read],
+  read: [
+    asyncErrorBoundary(reservationExists), 
+    read
+  ],
 };

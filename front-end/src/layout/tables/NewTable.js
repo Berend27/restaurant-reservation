@@ -11,7 +11,7 @@ function NewTable({ updateTrigger, setUpdateTrigger }) {
 
     const initialFormState = {
         table_name: "",
-        capacity: 1,
+        capacity: 0,
     }
 
     const [formData, setFormData] = useState({ ...initialFormState });
@@ -52,6 +52,9 @@ function NewTable({ updateTrigger, setUpdateTrigger }) {
         let errorString = "";
         if (table.table_name.length < 2) {
             errorString += "Table Name must be atleast two characters long.";
+        }
+        if (!table.capacity || table.capacity < 1) {
+            errorString += "A table must have a capacity of at least 1 person.";
         }
         if (errorString) {
             const error = new Error(errorString);
