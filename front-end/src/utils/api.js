@@ -55,6 +55,18 @@ async function fetchJson(url, options, onCancel) {
   }
 }
 
+export function deleteAssignment(table_id) {
+  return axios
+    .delete(`${API_BASE_URL}/tables/${table_id}/seat`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      error.message = error.response.data.error;
+      throw error;
+    });
+}
+
 export function getReservation(id) {
   return axios 
     .get(`${API_BASE_URL}/reservations/${id}`)
