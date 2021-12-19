@@ -1,7 +1,9 @@
 import React from 'react'
 import reactDom from 'react-dom'
 
-// todo: put this in an external style sheet
+// todo: delete this if not used by story 8
+
+// maybe todo: put this in an external style sheet
 const MODAL_STYLES = {
     position: 'fixed',
     top: '50%',
@@ -28,8 +30,6 @@ export default function Modal({ open, onClose, onOk, children }) {
     return reactDom.createPortal(
         <>
             <div style={OVERLAY_STYLES} />
-            <dialog style={MODAL_STYLES} open>This is an open dialog window</dialog>
-            {/* todo: replace this div with a dialog */}
             <div style={MODAL_STYLES} onClick={e => e.stopPropagation()}>
                 {children}
                 <button onClick={onOk}>Ok</button>
