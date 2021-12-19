@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "../Modal";
 
-function Table({ table }) {
+function Table({ table, deleteSeating }) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const status = table.reservation_id ? "Occupied" : "Free"
@@ -18,6 +18,11 @@ function Table({ table }) {
         setModalIsOpen(true);
     }
 
+    const deleteAndClose = async () => {
+        await deleteSeating(table);
+        closeModal();
+    }
+
     if (status === "Occupied") {
         finishButton = <button className="btn btn-danger" data-table-id-finish={table.table_id} onClick={displayModal}>Finish</button>;
     }
@@ -30,8 +35,8 @@ function Table({ table }) {
                 <p data-table-id-status={table.table_id}>{status}</p>
                 {finishButton}
             </div>
-            <Modal open={modalIsOpen} onClose={() => setModalIsOpen(false)}>
-                Fancy Modal
+            <Modal open={modalIsOpen} onClose={() => setModalIsOpen(false)} onOk={deleteAndClose}>
+                Is this table ready to seat new guests? This cannot be undone.
             </Modal>
         </div>
     );

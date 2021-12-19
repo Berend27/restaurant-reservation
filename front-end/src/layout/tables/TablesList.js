@@ -2,10 +2,10 @@ import "./TablesList.css";
 import React from "react";
 import Table from "./Table";
 
-function TablesList({ tables }) {
+function TablesList({ tables, deleteSeating }) {
     if (tables) {
         const items = tables.map((table) => {
-            return <li key={table.table_id}><Table table={table} /></li>
+            return <li key={table.table_id}><Table table={table} deleteSeating={deleteSeating} /></li>
         });
 
         return (

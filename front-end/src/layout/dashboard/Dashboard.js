@@ -6,7 +6,7 @@ import NewTable from "../tables/NewTable";
 import NotFound from "../NotFound";
 import useQuery from "../../utils/useQuery";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { getReservationsForDay, listTables } from "../../utils/api";
+import { deleteAssignment, getReservationsForDay, listTables } from "../../utils/api";
 import { today } from "../../utils/date-time";
 import { useLocation } from "react-router-dom";
 
@@ -30,6 +30,16 @@ function Dashboard() {
   useEffect(getDayFromQuery, [location, queryParameters]);
   useEffect(loadDashboard, [day, updateTrigger]);
   useEffect(loadTables, [updateTrigger]);
+
+  const deleteSeating = (table) => {
+    deleteAssignment(table.table_id)
+        .then(response => {
+          setUpdateTrigger(!updateTrigger);
+        })
+        .catch(error => {
+          setTablesError(error);
+        });
+}
 
   function getDayFromQuery() {
     if (queryParameters.has('date')) {
@@ -85,6 +95,7 @@ function Dashboard() {
       <Route path="/dashboard">
         <DashboardContent 
           day={day}
+          deleteSeating={deleteSeating}
           setDay={setDay} 
           reservations={reservations} 
           reservationsError={reservationsError} 

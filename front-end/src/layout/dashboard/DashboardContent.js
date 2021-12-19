@@ -8,7 +8,7 @@ import { next, previous, today } from "../../utils/date-time";
 import { putYearLast } from "../../utils/format-reservation-date";
 
 
-function DashboardContent({ day, setDay, reservations = {}, reservationsError, tables = [], tablesError }) {
+function DashboardContent({ day, deleteSeating, setDay, reservations = {}, reservationsError, tables = [], tablesError }) { 
   const handleNext = () => {
     console.log("Next pressed");
     setDay(next(day));
@@ -44,7 +44,7 @@ function DashboardContent({ day, setDay, reservations = {}, reservationsError, t
           <ReservationsList reservations={reservations.data} />
         </div>
         <div className="col-md-6" >
-          <TablesList tables={tables} />
+          <TablesList tables={tables} deleteSeating={deleteSeating} />
         </div>
       </div>
       <DashboardButtons 

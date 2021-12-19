@@ -111,7 +111,7 @@ const tableExists = (req, res, next) => {
         res.locals.table = table;
         return next();
       }
-      next({ status: 404, message: `Table not found` });
+      next({ status: 404, message: `Table with table_id ${id} not found` });
     })
     .catch(next);
 }
@@ -122,6 +122,17 @@ const tableIsFree = (req, res, next) => {
     return next({
       status: 400,
       message: `This table is currently occupied.`,
+    });
+  }
+  next();
+}
+
+const tableIsOccupied = (req, res, next) => {
+  const table = res.locals.table;
+  if (table.reservation_id === null) {
+    return next({
+      status: 400,
+      message: `This table is currently not occupied.`,
     });
   }
   next();
@@ -161,6 +172,16 @@ async function update(req, res, next) {
   res.status(200).json({ data });
 }
 
+async function updateToDeleteAssignment(req, res) {
+  const updatedTable = {
+    ...res.locals.table,
+    reservation_id: null,
+    table_id: res.locals.table.table_id,
+  };
+  await tablesService.update(updatedTable);
+  res.sendStatus(200);
+}
+
 module.exports = {
     create: [
         hasData,
@@ -180,5 +201,10 @@ module.exports = {
       capacityIsAtleast1,
       tableIsFree,
       asyncErrorBoundary(update)
+    ],
+    updateToDeleteAssignment: [
+      asyncErrorBoundary(tableExists),
+      tableIsOccupied,
+      asyncErrorBoundary(updateToDeleteAssignment)
     ],
 };
