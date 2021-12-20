@@ -18,6 +18,7 @@ const REQUIRED_PROPERTIES = [
 const VALID_PROPERTIES = [
   ...REQUIRED_PROPERTIES,
   'reservation_id',
+  'status',
   'created_at',
   'updated_at',
 ];
@@ -81,6 +82,23 @@ function hasOnlyValidProperties(req, res, next) {
   next();
 }
 
+async function hasValidStatus(req, res, next) {
+  const status = req.body.data.status;
+  if (status) {
+    if (["booked", "seated", "finished"].includes(status)) {
+      return next();
+    }
+    return next({
+      status: 400,
+      message: `unknown status value - the value for status must be either 'booked', 'seated', or 'finished'`,
+    });
+  }
+  next({
+    status: 400,
+    message: `The value for status is missing.`,
+  });
+}
+
 const isEligibleTime = (firstString, lastString, date) => {
   // firstString and lastString in format of HH:MM
   const pattern = /[0-2][0-9]:[0-5][0-9]/;
@@ -137,6 +155,28 @@ async function reservationExists(req, res, next) {
   next({ status: 404, message: `Reservation with a reservation_id of ${id} not found` });
 }
 
+function statusIsBooked(req, res, next) {
+  const status = req.body.data.status;
+  if (status === "booked"  || !status) {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `The status is ${status}. The status for a new reservation must be booked.`,
+  })
+}
+
+function statusIsNotFinished(req, res, next) {
+  const status = res.locals.reservation.status;
+  if (status === "finished") {
+    return next({
+      status: 400,
+      message: `A finished status cannot be updated.`,
+    });
+  }
+  next();
+}
+
 // Route Handlers
 
 async function create(req, res) {
@@ -158,6 +198,16 @@ function read(req, res) {
   res.json({ data: res.locals.reservation });
 }
 
+async function update(req, res) {
+  const updatedReservation = {
+    ...res.locals.reservation,
+    ...req.body.data,
+    reservation_id: res.locals.reservation.reservation_id,
+  };
+  const data = await service.update(updatedReservation);
+  res.status(200).json({ data });
+}
+
 module.exports = {
   create: [
     hasOnlyValidProperties, 
@@ -165,11 +215,19 @@ module.exports = {
     propertiesAreOfCorrectType, 
     hasPeople,
     dateIsValid,
+    statusIsBooked,
     asyncErrorBoundary(create)
   ],
   list: asyncErrorBoundary(list),
   read: [
     asyncErrorBoundary(reservationExists), 
     read
+  ],
+  updateStatus: [
+    asyncErrorBoundary(reservationExists),
+    hasOnlyValidProperties,
+    hasValidStatus,
+    statusIsNotFinished,
+    update
   ],
 };
