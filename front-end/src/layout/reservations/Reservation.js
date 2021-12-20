@@ -4,6 +4,14 @@ import { putYearLast } from "../../utils/format-reservation-date";
 import { toStandardTime } from "../../utils/format-reservation-time";
 
 function Reservation({ reservation }) {
+    const status = reservation.status ? reservation.status : "booked"
+
+    let seatButton = status === "booked" ? (
+        <a href={`/reservations/${reservation.reservation_id}/seat`}> 
+            <button type="button" className="btn btn-primary">Seat</button>
+        </a>
+    ) : null;
+
     return (
         <div className="card bg-dark text-white">
             <div className="card-body">
@@ -14,9 +22,9 @@ function Reservation({ reservation }) {
                 <p>{reservation.mobile_number}</p>
                 <h3>Time &amp; Date</h3>
                 <p>{toStandardTime(reservation.reservation_time)} on {putYearLast(reservation.reservation_date)}</p>
-                <a href={`/reservations/${reservation.reservation_id}/seat`}>  {/* todo: try just reservation_id if tests fail */}
-                    <button type="button" className="btn btn-primary">Seat</button>
-                </a>
+                <h3>Status</h3>
+                <p data-reservation-id-status={reservation.reservation_id}>{status}</p>
+                {seatButton}
             </div>
         </div>
     );
