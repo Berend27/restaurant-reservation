@@ -187,11 +187,17 @@ async function create(req, res) {
 
 async function list(req, res) {
   let date = req.query.date;
-  if (!date) {
-    date = today();
+  const number = req.query.mobile_number;
+  if (number) {
+    const data = await service.search(number);
+    res.json({ data });
+  } else {
+    if (!date) {
+      date = today();
+    }
+    const data = await service.listForDate(date);
+    res.json({ data });
   }
-  const data = await service.listForDate(date);
-  res.json({ data });
 }
 
 function read(req, res) {
