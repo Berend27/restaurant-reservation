@@ -1,3 +1,5 @@
+const knex = require("../db/connection");
+const reservationsController = require("../reservations/reservations.controller");
 const reservationsService = require("../reservations/reservations.service");
 const tablesService = require("./tables.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
@@ -102,6 +104,17 @@ const reservationExists = async (req, res, next) => {
   });
 }
 
+const reservationNotSeated = async (req, res, next) => {
+  const reservation = res.locals.reservation;
+  if (reservation.status === "seated") {
+    return next({
+      status: 400,
+      message: `this reservation is already seated`,
+    });
+  }
+  next();
+}
+
 const tableExists = (req, res, next) => {
   const id = req.params.table_id;
   tablesService
@@ -162,27 +175,36 @@ async function list(req, res) {
     res.json({ data });
 }
 
-async function update(req, res, next) {
+async function updateToSeat(req, res, next) {
+  const reservation = res.locals.reservation;
   const updatedTable = {
     ...res.locals.table,
     ...req.body.data,
     table_id: res.locals.table.table_id,
   };
   const data = await tablesService.update(updatedTable);
+  reservation.status = "seated"
+  await reservationsService.update(reservation);
   res.status(200).json({ data });
 }
 
 async function updateToDeleteAssignment(req, res) {
-  const updatedTable = {
-    ...res.locals.table,
-    reservation_id: null,
-    table_id: res.locals.table.table_id,
-  };
-  await tablesService.update(updatedTable);
+  // await knex.transaction(async (trx) => {
+    const reservation = res.locals.reservation;
+    reservation.status = "finished";
+    const updatedTable = {
+      ...res.locals.table,
+      reservation_id: null,
+      table_id: res.locals.table.table_id,
+    };
+    await tablesService.update(updatedTable);
+    await reservationsService.update(reservation);
+  // })
   res.sendStatus(200);
 }
 
 module.exports = {
+  
     create: [
         hasData,
         hasRequiredProperties,
@@ -193,18 +215,20 @@ module.exports = {
         asyncErrorBoundary(create)
     ],
     list: asyncErrorBoundary(list),
-    update: [
+    updateToSeat: [
       hasData,
       asyncErrorBoundary(tableExists),
       reservationExists,
+      reservationNotSeated,
       capacityIsAdequate,
       capacityIsAtleast1,
       tableIsFree,
-      asyncErrorBoundary(update)
+      asyncErrorBoundary(updateToSeat)
     ],
     updateToDeleteAssignment: [
       asyncErrorBoundary(tableExists),
       tableIsOccupied,
+      reservationExists,
       asyncErrorBoundary(updateToDeleteAssignment)
     ],
 };
