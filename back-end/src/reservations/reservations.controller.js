@@ -24,33 +24,33 @@ const VALID_PROPERTIES = [
 ];
 
 // todo: fix this now that reservation_date is of type date and reservation_time is now a time in the database
-// const dateIsValid = (req, res, next) => {
-//   const dateString = req.body.data.reservation_date;
-//   const timeString = req.body.data.reservation_time;
-//   const openingTimeString = "10:30";
-//   const lastHourString = "21:30";
-//   let errorString = "";
-//   if (dateString && timeString) {
-//     const dateAndTime = dateString + "T" + timeString + ":00";
-//     const date = new Date(dateAndTime);
-//     if (date.getDay() === 2) {
-//       errorString += `Tuesday reservations aren't allowed as the restaurant is closed on Tuesdays.\n`;
-//     }
-//     if (Date.now() > date.getTime()) {
-//       errorString += `The reservation date is in the past. Only future reservations are allowed.`;
-//     }
-//     if (!isEligibleTime(openingTimeString, lastHourString, date)) {
-//       errorString += `The reservation must be between ${openingTimeString} and ${lastHourString} inclusive`;
-//   }
-//     if (errorString) {
-//       return next({
-//         status: 400,
-//         message: errorString,
-//       });
-//     }
-//   }
-//   next();
-// }
+const dateIsValid = (req, res, next) => {
+  const dateString = req.body.data.reservation_date.toString();
+  const timeString = req.body.data.reservation_time.toString();
+  const openingTimeString = "10:30";
+  const lastHourString = "21:30";
+  let errorString = "";
+  if (dateString && timeString) {
+    const dateAndTime = dateString + "T" + timeString + ":00";
+    const date = new Date(dateAndTime);
+    if (date.getDay() === 2) {
+      errorString += `Tuesday reservations aren't allowed as the restaurant is closed on Tuesdays.\n`;
+    }
+    if (Date.now() > date.getTime()) {
+      errorString += `The reservation date is in the past. Only future reservations are allowed.`;
+    }
+    if (!isEligibleTime(openingTimeString, lastHourString, date)) {
+      errorString += `The reservation must be between ${openingTimeString} and ${lastHourString} inclusive`;
+  }
+    if (errorString) {
+      return next({
+        status: 400,
+        message: errorString,
+      });
+    }
+  }
+  next();
+}
 
 const hasPeople = (req, res, next) => {
   const { data = {} } = req.body;
@@ -221,7 +221,7 @@ module.exports = {
     hasRequiredProperties, 
     propertiesAreOfCorrectType, 
     hasPeople,
-    // dateIsValid,
+    dateIsValid,
     statusIsBooked,
     asyncErrorBoundary(create)
   ],
