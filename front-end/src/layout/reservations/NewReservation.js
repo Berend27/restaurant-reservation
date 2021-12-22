@@ -20,6 +20,7 @@ function NewReservation({ updateTrigger, setUpdateTrigger }) {
     const [reservationError, setReservationError] = useState(null);
 
     const displayReservation = (date) => {
+        console.log(date);
         setUpdateTrigger(!updateTrigger);
         history.push(`/dashboard?date=${date}`);
     }
@@ -38,7 +39,7 @@ function NewReservation({ updateTrigger, setUpdateTrigger }) {
                 'first_name' : formData.first_name,
                 'last_name' : formData.last_name,
                 'mobile_number' : formData.mobile_number,
-                'reservation_date' : new Date(formData.reservation_date),
+                'reservation_date' : formData.reservation_date,
                 'reservation_time' : formData.reservation_time,
                 'people' : Number.parseInt(formData.people)
             }

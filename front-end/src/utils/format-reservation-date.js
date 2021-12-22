@@ -9,9 +9,10 @@ function formatDate(reservation) {
 }
 
 export function putYearLast(date) {
-  if (date.length === 10) {
+  if (date.length >= 10) {
+    date = date.slice(0, 10);
     return date.slice(5).concat('-').concat(date.slice(0, 4));
-  } 
+  }
   return date;
 }
 

@@ -25,21 +25,30 @@ const VALID_PROPERTIES = [
 
 // todo: fix this now that reservation_date is of type date and reservation_time is now a time in the database
 const dateIsValid = (req, res, next) => {
-  const dateString = req.body.data.reservation_date.toString();
-  const timeString = req.body.data.reservation_time.toString();
+  const dateArray = req.body.data.reservation_date.split("-");
+  const timeArray = req.body.data.reservation_time.split(":");
+  console.log(dateArray);
+  console.log(timeArray);
   const openingTimeString = "10:30";
   const lastHourString = "21:30";
+  const year = Number(dateArray[0]);
+  const month = Number(dateArray[1] - 1);
+  const day = Number(dateArray[2].slice(0, 2));
+  console.log(day);
+  const hour = timeArray[0];
+  const minute = timeArray[1];
+  const timeString = timeArray[0] + ":" + timeArray[1];
+  const date = new Date(year, month, day, hour, minute);
   let errorString = "";
-  if (dateString && timeString) {
-    const dateAndTime = dateString + "T" + timeString + ":00";
-    const date = new Date(dateAndTime);
+  console.log(date);
+  if (dateArray && timeArray) {
     if (date.getDay() === 2) {
       errorString += `Tuesday reservations aren't allowed as the restaurant is closed on Tuesdays.\n`;
     }
     if (Date.now() > date.getTime()) {
       errorString += `The reservation date is in the past. Only future reservations are allowed.`;
     }
-    if (!isEligibleTime(openingTimeString, lastHourString, date)) {
+    if (!isEligibleTime(openingTimeString, lastHourString, timeString)) {
       errorString += `The reservation must be between ${openingTimeString} and ${lastHourString} inclusive`;
   }
     if (errorString) {
@@ -100,23 +109,24 @@ async function hasValidStatus(req, res, next) {
   });
 }
 
-const isEligibleTime = (firstString, lastString, date) => {
+const isEligibleTime = (openingString, closingString, timeString) => {
   // firstString and lastString in format of HH:MM
   const pattern = /[0-2][0-9]:[0-5][0-9]/;
-  if (!pattern.test(firstString) || !pattern.test(lastString)) {
+  if (!pattern.test(openingString) || !pattern.test(closingString)) {
       throw new Error("firstString and lastString must both be of the format HH:MM");
   }
-  const openingHour = Number.parseInt(firstString.slice(0, 2));
-  const openingMinute = Number.parseInt(firstString.slice(3, 5));
-  const openingDate = new Date(date);
-  openingDate.setHours(openingHour);
-  openingDate.setMinutes(openingMinute);
-  const closingHour = Number.parseInt(lastString.slice(0, 2));
-  const closingMinute = Number.parseInt(lastString.slice(3, 5));
-  const closingDate = new Date(date);
-  closingDate.setHours(closingHour);
-  closingDate.setMinutes(closingMinute);
-  return (date.getTime() <= closingDate.getTime() && date.getTime() >= openingDate.getTime());
+  return (timeString >= openingString && timeString <= closingString);
+  // const openingHour = Number.parseInt(firstString.slice(0, 2));
+  // const openingMinute = Number.parseInt(firstString.slice(3, 5));
+  // const openingDate = new Date(date);
+  // openingDate.setHours(openingHour);
+  // openingDate.setMinutes(openingMinute);
+  // const closingHour = Number.parseInt(lastString.slice(0, 2));
+  // const closingMinute = Number.parseInt(lastString.slice(3, 5));
+  // const closingDate = new Date(date);
+  // closingDate.setHours(closingHour);
+  // closingDate.setMinutes(closingMinute);
+  // return (date.getTime() <= closingDate.getTime() && date.getTime() >= openingDate.getTime());
 }
 
 function propertiesAreOfCorrectType(req, res, next) {
