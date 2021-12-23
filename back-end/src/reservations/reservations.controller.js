@@ -27,20 +27,16 @@ const VALID_PROPERTIES = [
 const dateIsValid = (req, res, next) => {
   const dateArray = req.body.data.reservation_date.split("-");
   const timeArray = req.body.data.reservation_time.split(":");
-  console.log(dateArray);
-  console.log(timeArray);
   const openingTimeString = "10:30";
   const lastHourString = "21:30";
   const year = Number(dateArray[0]);
   const month = Number(dateArray[1] - 1);
   const day = Number(dateArray[2].slice(0, 2));
-  console.log(day);
   const hour = timeArray[0];
   const minute = timeArray[1];
   const timeString = timeArray[0] + ":" + timeArray[1];
   const date = new Date(year, month, day, hour, minute);
   let errorString = "";
-  console.log(date);
   if (dateArray && timeArray) {
     if (date.getDay() === 2) {
       errorString += `Tuesday reservations aren't allowed as the restaurant is closed on Tuesdays.\n`;

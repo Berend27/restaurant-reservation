@@ -86,7 +86,11 @@ const propertiesAreOfCorrectType = (req, res, next) => {
 
 const reservationExists = async (req, res, next) => {
   const { data = {} } = req.body;
-  const reservation_id = data.reservation_id;
+  let reservation_id = data.reservation_id;
+  if (!reservation_id) {
+    const table = res.locals.table;
+    reservation_id = table.reservation_id;
+  }
   if (reservation_id) {
     const reservation = await reservationsService.read(reservation_id);
     if (reservation) {

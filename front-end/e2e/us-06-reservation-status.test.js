@@ -56,18 +56,20 @@ describe("US-06 - Reservation status - E2E", () => {
     });
 
     test("/dashboard displays status", async () => {
-      await page.screenshot({
-        path: ".screenshots/us-06-dashboard-displays-status.png",
-        fullPage: true,
-      });
-
-      const containsBooked = await containsText(
-        page,
-        `[data-reservation-id-status="${reservation.reservation_id}"]`,
-        "booked"
-      );
-
-      expect(containsBooked).toBe(true);
+      setTimeout( async () => {  
+        await page.screenshot({
+          path: ".screenshots/us-06-dashboard-displays-status.png",
+          fullPage: true,
+        });
+  
+        const containsBooked = await containsText(
+          page,
+          `[data-reservation-id-status="${reservation.reservation_id}"]`,
+          "booked"
+        );
+  
+        expect(containsBooked).toBe(true);
+       }, 2000);
     });
 
     test("Seating the reservation changes status to 'seated' and hides Seat button", async () => {
