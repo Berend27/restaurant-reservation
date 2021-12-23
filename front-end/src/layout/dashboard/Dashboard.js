@@ -9,6 +9,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { deleteAssignment, getReservationsForDay, listTables } from "../../utils/api";
 import { today } from "../../utils/date-time";
 import { useLocation } from "react-router-dom";
+import Search from "../search/Search";
 
 /**
  * Defines all the routes for the application.
@@ -102,6 +103,9 @@ function Dashboard() {
           tables={tables}
           tablesError={tablesError}
         />
+      </Route>
+      <Route>
+        <Search /> {/* todo */}
       </Route>
       <Route>
         <NotFound />
