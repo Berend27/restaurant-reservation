@@ -25,6 +25,9 @@ function Reservation({ reservation }) {
                 <h3>Status</h3>
                 <p data-reservation-id-status={reservation.reservation_id}>{status}</p>
                 {seatButton}
+                <a href={`/reservations/${reservation.reservation_id}/edit`}>
+                    <button type="button" className="btn btn-secondary">Edit</button>
+                </a>
             </div>
         </div>
     );

@@ -10,6 +10,7 @@ import { deleteAssignment, getReservationsForDay, listTables } from "../../utils
 import { today } from "../../utils/date-time";
 import { useLocation } from "react-router-dom";
 import Search from "../search/Search";
+import EditReservation from "../reservations/edit/EditReservation";
 
 /**
  * Defines all the routes for the application.
@@ -87,6 +88,9 @@ function Dashboard() {
       <Route path="/reservations/new">
         <NewReservation updateTrigger={updateTrigger} setUpdateTrigger={setUpdateTrigger} />
       </Route>
+      <Route path="/reservations/:reservation_id/edit">
+        <EditReservation />
+      </Route>
       <Route path="/reservations/:reservation_id/seat">
         <NewSeating tables={tables} updateTrigger={updateTrigger} setUpdateTrigger={setUpdateTrigger} />
       </Route>
@@ -104,8 +108,8 @@ function Dashboard() {
           tablesError={tablesError}
         />
       </Route>
-      <Route>
-        <Search /> {/* todo */}
+      <Route path="/search">
+        <Search /> 
       </Route>
       <Route>
         <NotFound />
