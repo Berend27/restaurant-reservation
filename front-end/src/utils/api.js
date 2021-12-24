@@ -145,3 +145,15 @@ export async function putTable(data, tableId) {
       throw error;
     });
 }
+
+export async function searchForMobileNumber(mobileNumber) {
+  return axios 
+    .get(`${API_BASE_URL}/reservations?mobile_number=${mobileNumber}`)
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => {
+      error.message = error.response.data.error;
+      throw error;
+    })
+}
