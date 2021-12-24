@@ -91,7 +91,7 @@ function hasOnlyValidProperties(req, res, next) {
 async function hasValidStatus(req, res, next) {
   const status = req.body.data.status;
   if (status) {
-    if (["booked", "seated", "finished"].includes(status)) {
+    if (["booked", "seated", "finished", "cancelled"].includes(status)) {
       return next();
     }
     return next({
