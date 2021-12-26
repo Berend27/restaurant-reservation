@@ -3,7 +3,15 @@ import "./Reservation.css";
 import { putYearLast } from "../../utils/format-reservation-date";
 import { toStandardTime } from "../../utils/format-reservation-time";
 
-function Reservation({ reservation }) {
+function Reservation({ cancelReservation, reservation }) {
+    
+    const displayConfirm = async () => {
+        document.getElementById(`cancel`).blur();
+        if (window.confirm("Do you want to cancel this reservation? This cannot be undone.")) {
+            await cancelReservation(reservation.reservation_id);
+        }
+    }
+
     const status = reservation.status ? reservation.status : "booked"
 
     let seatButton = status === "booked" ? (
@@ -28,6 +36,15 @@ function Reservation({ reservation }) {
                 <a href={`/reservations/${reservation.reservation_id}/edit`}>
                     <button type="button" className="btn btn-secondary">Edit</button>
                 </a>
+                <button 
+                    id="cancel"
+                    type="button" 
+                    className="btn btn-danger"
+                    data-reservation-id-cancel={reservation.reservation_id} 
+                    onClick={displayConfirm}
+                >
+                    Cancel
+                </button>
             </div>
         </div>
     );

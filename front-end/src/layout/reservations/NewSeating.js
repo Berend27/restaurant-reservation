@@ -30,19 +30,8 @@ function NewSeating({ tables, updateTrigger, setUpdateTrigger }) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // const capacityIndex = selected.lastIndexOf("-") + 2;
-        // if (capacityIndex > 1 && selected.length > 2) {
-        //     const capacity = Number.parseInt(selected.slice(capacityIndex));
-        // }
-        // console.log("selected");
-        // console.log(typeof selectedIdString);
-        // console.log(selectedIdString);
         const table = tables.find((table) => table.table_id === Number.parseInt(selectedIdString));
         if (table && await checkCapacity(table.capacity)) {
-            // todo
-            console.log("reservation is valid")
-            // possible later todo: post to seatings
-            // todo: put to tables with {data: {reservation_id}} at /tables/:table_id/seat
             putTable({ data: { reservation_id: reservation_id } }, table.table_id)
                 .then(() => {
                     setUpdateTrigger(!updateTrigger);

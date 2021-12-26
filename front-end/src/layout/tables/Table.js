@@ -13,7 +13,12 @@ function Table({ table, deleteSeating }) {
     }
 
     if (status === "Occupied") {
-        finishButton = <button className="btn btn-danger" data-table-id-finish={table.table_id} id="finish" onClick={displayConfirm}>
+        finishButton = <button 
+                            className="btn btn-danger" 
+                            data-table-id-finish={table.table_id} 
+                            id="finish" 
+                            onClick={displayConfirm}
+                        >
             Finish
         </button>;
     }

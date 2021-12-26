@@ -6,7 +6,11 @@ import NewTable from "../tables/NewTable";
 import NotFound from "../NotFound";
 import useQuery from "../../utils/useQuery";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { deleteAssignment, getReservationsForDay, listTables } from "../../utils/api";
+import { 
+  cancelReservation,
+  deleteAssignment, 
+  getReservationsForDay, 
+  listTables } from "../../utils/api";
 import { today } from "../../utils/date-time";
 import { useLocation } from "react-router-dom";
 import Search from "../search/Search";
@@ -32,6 +36,15 @@ function Dashboard() {
   useEffect(getDayFromQuery, [location, queryParameters]);
   useEffect(loadDashboard, [day, updateTrigger]);
   useEffect(loadTables, [updateTrigger]);
+
+  const cancelTheReservation = async (reservation_id) => {
+    try {
+        await cancelReservation(reservation_id);
+        setUpdateTrigger(!updateTrigger);
+    } catch (error) {
+        setReservationsError(error);
+    }
+  }
 
   const deleteSeating = (table) => {
     deleteAssignment(table.table_id)
@@ -99,11 +112,13 @@ function Dashboard() {
       </Route>
       <Route path="/dashboard">
         <DashboardContent 
+          cancelReservation={cancelTheReservation}
           day={day}
           deleteSeating={deleteSeating}
           setDay={setDay} 
           reservations={reservations} 
           reservationsError={reservationsError} 
+          setReservationsError={setReservationsError}
           tables={tables}
           tablesError={tablesError}
         />

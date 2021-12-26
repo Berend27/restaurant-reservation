@@ -55,6 +55,17 @@ async function fetchJson(url, options, onCancel) {
   }
 }
 
+export function cancelReservation(reservationId) {
+  return axios 
+    .put(`${API_BASE_URL}/reservations/${reservationId}/status`,
+      { data: { status: "cancelled" }}
+    )
+    .catch((error) => {
+      error.message = error.response.data.error;
+      throw error;
+    });
+}
+
 export function deleteAssignment(table_id) {
   return axios
     .delete(`${API_BASE_URL}/tables/${table_id}/seat`)
@@ -78,7 +89,7 @@ export function getReservation(id) {
     });
 }
 
-export async function getReservationsForDay(date) {
+export function getReservationsForDay(date) {
   return axios
     .get(`${API_BASE_URL}/reservations?date=${date}`)
     .then((response) => {
@@ -119,16 +130,13 @@ export async function listTables() {
 export async function postReservation(reservationData) {
   return axios
     .post(`${API_BASE_URL}/reservations/new`, reservationData)
-    // .then((response) => {
-    //   console.log(response);
-    // })
     .catch((error) => {
       error.message = error.response.data.error
       throw error;
     });
 }
 
-export async function postTable(tableData) {
+export function postTable(tableData) {
   return axios
     .post(`${API_BASE_URL}/tables`, tableData)
     .catch((error) => {
@@ -137,7 +145,12 @@ export async function postTable(tableData) {
     });
 }
 
-export async function putTable(data, tableId) {
+export function putReservation(data, reservationId) {
+  // return axios
+  //   .put(`${API_BASE_URL}`)
+}
+
+export function putTable(data, tableId) {
   return axios 
     .put(`${API_BASE_URL}/tables/${tableId}/seat`, data)
     .catch((error) => {
@@ -146,7 +159,7 @@ export async function putTable(data, tableId) {
     });
 }
 
-export async function searchForMobileNumber(mobileNumber) {
+export function searchForMobileNumber(mobileNumber) {
   return axios 
     .get(`${API_BASE_URL}/reservations?mobile_number=${mobileNumber}`)
     .then(response => {
