@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DashboardContent from "./DashboardContent";
+import EditReservation from "../reservations/EditReservation";
 import NewReservation from "../reservations/NewReservation";
 import NewSeating from "../reservations/NewSeating";
 import NewTable from "../tables/NewTable";
@@ -14,7 +15,6 @@ import {
 import { today } from "../../utils/date-time";
 import { useLocation } from "react-router-dom";
 import Search from "../search/Search";
-import EditReservation from "../reservations/edit/EditReservation";
 
 /**
  * Defines all the routes for the application.

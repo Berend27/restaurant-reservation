@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ErrorAlert from "../ErrorAlert";
+import ReservationForm from "./ReservationForm";
 import { postReservation } from "../../utils/api";
 import { useHistory } from "react-router-dom";
 
@@ -16,31 +17,27 @@ function NewReservation({ updateTrigger, setUpdateTrigger }) {
         people: 1,
     }
 
-    const [formData, setFormData] = useState({ ...initialFormState });
+    const [reservation, setReservation] = useState({ ...initialFormState });
     const [reservationError, setReservationError] = useState(null);
 
     const displayReservation = (date) => {
         setUpdateTrigger(!updateTrigger);
         history.push(`/dashboard?date=${date}`);
     }
-
-    const handleChange = ({ target }) => {
-        setFormData({
-            ...formData,
-            [target.name]: target.value,
-        });
-    };
+    const handleCancel = () => {
+        history.goBack();
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const reservationData = {
             data : {
-                'first_name' : formData.first_name,
-                'last_name' : formData.last_name,
-                'mobile_number' : formData.mobile_number,
-                'reservation_date' : formData.reservation_date,
-                'reservation_time' : formData.reservation_time,
-                'people' : Number.parseInt(formData.people)
+                'first_name' : reservation.first_name,
+                'last_name' : reservation.last_name,
+                'mobile_number' : reservation.mobile_number,
+                'reservation_date' : reservation.reservation_date,
+                'reservation_time' : reservation.reservation_time,
+                'people' : Number.parseInt(reservation.people)
             }
         };
         if (reservationIsValid()) {
@@ -55,8 +52,8 @@ function NewReservation({ updateTrigger, setUpdateTrigger }) {
     }
 
     const reservationIsValid = () => {
-        const dateString = formData.reservation_date
-        const timeString = formData.reservation_time;
+        const dateString = reservation.reservation_date
+        const timeString = reservation.reservation_time;
         const openingTimeString = "10:30";
         const lastHourString = "21:30";
         let errorString = "";
@@ -108,99 +105,12 @@ function NewReservation({ updateTrigger, setUpdateTrigger }) {
         <>
             <ErrorAlert error={reservationError} />
             <h1>New Reservation</h1>
-            <form onSubmit={handleSubmit}>
-                <div className="form-row">
-                    <div className="form-group col-md-6">
-                        <label htmlFor="first_name">First Name</label>
-                        <input
-                            className="form-control"
-                            id="first_name"
-                            type="text"
-                            name="first_name"
-                            onChange={handleChange}
-                            value={formData.first_name}
-                            required
-                        />
-                    </div>
-                    <div className="form-group col-md-6">
-                        <label htmlFor="last_name">Last Name</label>
-                        <input
-                            className="form-control"
-                            id="last_name"
-                            type="text"
-                            name="last_name"
-                            onChange={handleChange}
-                            value={formData.last_name}
-                            required
-                        />
-                    </div>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="reservation_date">Reservation Date</label>
-                    <input 
-                        className="form-control"
-                        id="reservation_date"
-                        type="date"
-                        name="reservation_date"
-                        onChange={handleChange}
-                        pattern="\d{4}-\d{2}-\d{2}"
-                        placeholder="YYYY-MM-DD"
-                        value={formData.reservation_date}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="reservation_time">Reservation Time</label>
-                    <input 
-                        className="form-control"
-                        id="reservation_time"
-                        type="time"
-                        name="reservation_time"
-                        onChange={handleChange}
-                        pattern="[0-9]{2}:[0-9]{2}"
-                        placeholder="HH:MM"
-                        value={formData.reservation_time}
-                        required
-                    />
-                </div>
-                <div className="form-row">
-                    <div className="form-group col-md-6">
-                        <label htmlFor="people">Number of People</label>
-                        <input 
-                            className="form-control"
-                            id="people"
-                            type="number"
-                            name="people"
-                            min="1"
-                            onChange={handleChange}
-                            value={formData.people}
-                            required
-                        />
-                    </div>
-                    <div className="form-group col-md-6">
-                        <label htmlFor="mobile_number">Mobile Number</label>
-                        <input
-                            className="form-control"
-                            id="mobile_number"
-                            type="tel"
-                            name="mobile_number"
-                            onChange={handleChange}
-                            value={formData.mobile_number}
-                            // pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"  // todo: uncomment this?
-                            placeholder="###-###-####"
-                            required
-                        />
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col">
-                        <button type="submit" className="btn btn-secondary">Submit</button>
-                    </div>
-                    <div className="col pl-0">
-                        <button type="button" className="btn btn-secondary" onClick={() => history.goBack()}>Cancel</button>
-                    </div>
-                </div>
-            </form>
+            <ReservationForm 
+                reservation={reservation} 
+                setReservation={setReservation} 
+                handleCancel={handleCancel} 
+                handleSubmit={handleSubmit} 
+            />
         </>
     );
 }

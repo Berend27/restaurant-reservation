@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import ErrorAlert from "../../ErrorAlert";
-import { getReservation } from "../../../utils/api";
+import ErrorAlert from "../ErrorAlert";
+import { getReservation } from "../../utils/api";
 import { useParams } from "react-router-dom";
 
 function EditReservation() {
@@ -10,6 +10,7 @@ function EditReservation() {
 
     const { reservation_id } = useParams();
 
+    // todo: make a boolean for this?
     let statusMessage = reservation.status === 'booked' ? 
         null :
         <p>Only reservations with a status of 'booked' can be edited.</p>;
