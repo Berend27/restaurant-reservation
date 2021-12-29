@@ -15,8 +15,8 @@ function Reservation({ cancelReservation, reservation }) {
     const status = reservation.status ? reservation.status : "booked"
 
     let seatButton = status === "booked" ? (
-        <a href={`/reservations/${reservation.reservation_id}/seat`}> 
-            <button type="button" className="btn btn-primary">Seat</button>
+        <a href={`/reservations/${reservation.reservation_id}/seat`} className=" btn btn-primary d-inline-block flex-grow-1 mr-2"> 
+            Seat
         </a>
     ) : null;
 
@@ -32,19 +32,21 @@ function Reservation({ cancelReservation, reservation }) {
                 <p>{toStandardTime(reservation.reservation_time)} on {putYearLast(reservation.reservation_date)}</p>
                 <h3>Status</h3>
                 <p data-reservation-id-status={reservation.reservation_id}>{status}</p>
-                {seatButton}
-                <a href={`/reservations/${reservation.reservation_id}/edit`}>
-                    <button type="button" className="btn btn-secondary">Edit</button>
-                </a>
-                <button 
-                    id="cancel"
-                    type="button" 
-                    className="btn btn-danger"
-                    data-reservation-id-cancel={reservation.reservation_id} 
-                    onClick={displayConfirm}
-                >
-                    Cancel
-                </button>
+                <div className="d-flex justify-content-between">
+                    {seatButton}
+                    <a href={`/reservations/${reservation.reservation_id}/edit`} className=" btn btn-secondary d-inline-block flex-grow-1 mr-2">
+                        Edit
+                    </a>
+                    <button 
+                        id="cancel"
+                        type="button" 
+                        className="btn btn-danger flex-grow-1 px-1"
+                        data-reservation-id-cancel={reservation.reservation_id} 
+                        onClick={displayConfirm}
+                    >
+                        Cancel
+                    </button>
+                </div>
             </div>
         </div>
     );

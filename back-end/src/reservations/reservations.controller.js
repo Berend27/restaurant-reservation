@@ -145,7 +145,7 @@ function propertiesAreOfCorrectType(req, res, next) {
   if (!isTime(data.reservation_time)) {
     return next({
       status: 400,
-      message: `'reservation_time' must be a valid date in the correct format HH:MM`,
+      message: `'reservation_time' must be a valid time in the correct format HH:MM`,
     });
   }
 

@@ -35,7 +35,7 @@ function Dashboard() {
 
   useEffect(getDayFromQuery, [location, queryParameters]);
   useEffect(loadDashboard, [day, updateTrigger]);
-  useEffect(loadTables, [updateTrigger]);
+  // useEffect(loadTables, [updateTrigger]);
 
   const cancelTheReservation = async (reservation_id) => {
     try {
@@ -63,32 +63,45 @@ function Dashboard() {
     }
   }
 
-  function loadDashboard() {
+  async function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
     // listReservations({ date }, abortController.signal)
     //   .then(setReservations)
     //   .catch(setReservationsError);
-    getReservationsForDay(day)
-      .then((data) => {
-        setReservations(data)
-      })
-      .catch(setReservationsError);
+    try {
+      const response = await getReservationsForDay(day);
+      setReservations(response.data);
+      setTablesError(null);
+      try {
+        const tablesResponse = await listTables();
+        if (tablesResponse.data) {
+          setTables(tablesResponse.data);
+        }
+      } catch (errorWithTables) {
+        setTablesError(errorWithTables)
+      }
+    } catch (error) {
+      setReservationsError(error);
+    }
+     
     return () => abortController.abort();
   }
 
-  function loadTables() {
-    const abortController = new AbortController();
-    setTablesError(null);
-    listTables()
-      .then((response) => {
-        if (response.data) {
-          setTables(response.data);
-        } 
-      })
-      .catch(setTablesError);
-    return () => abortController.abort();
-  }
+  // function loadTables() {
+  //   const abortController = new AbortController();
+  //   setTablesError(null);
+  //   setTimeout( async () => { 
+  //   listTables()
+  //     .then((response) => {
+  //       if (response.data) {
+  //         setTables(response.data);
+  //       } 
+  //     })
+  //     .catch(setTablesError);
+  //   }, 600);
+  //   return () => abortController.abort();
+  // }
 
   return (
     <Switch>
@@ -102,7 +115,7 @@ function Dashboard() {
         <NewReservation updateTrigger={updateTrigger} setUpdateTrigger={setUpdateTrigger} />
       </Route>
       <Route path="/reservations/:reservation_id/edit">
-        <EditReservation />
+        <EditReservation updateTrigger={updateTrigger} setUpdateTrigger={setUpdateTrigger} />
       </Route>
       <Route path="/reservations/:reservation_id/seat">
         <NewSeating tables={tables} updateTrigger={updateTrigger} setUpdateTrigger={setUpdateTrigger} />

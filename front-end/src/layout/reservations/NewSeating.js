@@ -13,7 +13,6 @@ function NewSeating({ tables, updateTrigger, setUpdateTrigger }) {
 
     const checkCapacity = async (capacity) => {
         const people = reservation.people;
-        console.log(people);
         return people <= capacity;
     }
 

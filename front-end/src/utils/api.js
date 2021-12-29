@@ -123,7 +123,7 @@ export async function listTables() {
       return response.data;
     })
     .catch((error) => {
-      console.log(error.message);  // todo: use something instead of console.log()?
+      console.log(error.message);
     })
 }
 
@@ -146,8 +146,12 @@ export function postTable(tableData) {
 }
 
 export function putReservation(data, reservationId) {
-  // return axios
-  //   .put(`${API_BASE_URL}`)
+  return axios
+    .put(`${API_BASE_URL}/reservations/${reservationId}`, data)
+    .catch(error => {
+      error.message = error.response.data.error;
+      throw error;
+    });
 }
 
 export function putTable(data, tableId) {
