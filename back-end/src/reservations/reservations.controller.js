@@ -23,7 +23,6 @@ const VALID_PROPERTIES = [
   'updated_at',
 ];
 
-// todo: fix this now that reservation_date is of type date and reservation_time is now a time in the database
 const dateIsValid = (req, res, next) => {
   const dateArray = req.body.data.reservation_date.split("-");
   const timeArray = req.body.data.reservation_time.split(":");

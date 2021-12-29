@@ -19,7 +19,6 @@ router
     .post(controller.create)
     .all(methodNotAllowed);
 
-    // todo: change this route?
 router
     .route("/:reservation_id")
     .get(controller.read)

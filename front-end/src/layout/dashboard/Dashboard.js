@@ -35,7 +35,6 @@ function Dashboard() {
 
   useEffect(getDayFromQuery, [location, queryParameters]);
   useEffect(loadDashboard, [day, updateTrigger]);
-  // useEffect(loadTables, [updateTrigger]);
 
   const cancelTheReservation = async (reservation_id) => {
     try {
@@ -63,45 +62,29 @@ function Dashboard() {
     }
   }
 
-  async function loadDashboard() {
+  function loadDashboard() {
     const abortController = new AbortController();
-    setReservationsError(null);
-    // listReservations({ date }, abortController.signal)
-    //   .then(setReservations)
-    //   .catch(setReservationsError);
-    try {
-      const response = await getReservationsForDay(day);
-      setReservations(response.data);
-      setTablesError(null);
+    async function fetchData() {
+      setReservationsError(null);
       try {
-        const tablesResponse = await listTables();
-        if (tablesResponse.data) {
-          setTables(tablesResponse.data);
+        const response = await getReservationsForDay(day);
+        setReservations(response.data);
+        setTablesError(null);
+        try {
+          const tablesResponse = await listTables();
+          if (tablesResponse.data) {
+            setTables(tablesResponse.data);
+          }
+        } catch (errorWithTables) {
+          setTablesError(errorWithTables)
         }
-      } catch (errorWithTables) {
-        setTablesError(errorWithTables)
+      } catch (error) {
+        setReservationsError(error);
       }
-    } catch (error) {
-      setReservationsError(error);
     }
-     
+    fetchData();
     return () => abortController.abort();
   }
-
-  // function loadTables() {
-  //   const abortController = new AbortController();
-  //   setTablesError(null);
-  //   setTimeout( async () => { 
-  //   listTables()
-  //     .then((response) => {
-  //       if (response.data) {
-  //         setTables(response.data);
-  //       } 
-  //     })
-  //     .catch(setTablesError);
-  //   }, 600);
-  //   return () => abortController.abort();
-  // }
 
   return (
     <Switch>

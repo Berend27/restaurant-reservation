@@ -56,8 +56,6 @@ describe("US-06 - Reservation status - E2E", () => {
     });
 
     test("/dashboard displays status", async () => {
-      // todo: do something about this
-      // setTimeout( async () => {   // this approach works but is kind of cheating
         await page.screenshot({
           path: ".screenshots/us-06-dashboard-displays-status.png",
           fullPage: true,
@@ -70,7 +68,6 @@ describe("US-06 - Reservation status - E2E", () => {
         );
   
         expect(containsBooked).toBe(true);
-      //  }, 2000);
     });
 
     test("Seating the reservation changes status to 'seated' and hides Seat button", async () => {

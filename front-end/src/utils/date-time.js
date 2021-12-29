@@ -15,18 +15,6 @@ function asDateString(date) {
     .padStart(2, "0")}-${date.getDate().toString(10).padStart(2, "0")}`;
 }
 
-// todo: delete this commented out code?
-// /**
-//  * Format a time string in HH:MM:SS format (which is what is returned from PostgreSQL) as HH:MM.
-//  * @param timeString
-//  *  HH:MM:SS time string
-//  * @returns {*}
-//  *  the specified time string formatted as YHH:MM.
-//  */
-// export function formatAsTime(timeString) {
-//   return timeString.match(timeFormat)[0];
-// }
-
 /**
  * Today's date as YYYY-MM-DD.
  * @returns {*}

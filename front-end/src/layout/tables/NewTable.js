@@ -99,11 +99,11 @@ function NewTable({ updateTrigger, setUpdateTrigger }) {
                 </div>
                 {/* Todo: resize or reposition the buttons for phone sized screens */}
                 <div className="row">
-                    <div className="col">
-                        <button type="submit" className="btn btn-secondary">Submit</button>
+                    <div className="col-md-6 pr-md-1">
+                        <button type="submit" className="btn btn-secondary w-100 mt-2">Submit</button>
                     </div>
-                    <div className="col pl-0">
-                        <button type="button" className="btn btn-secondary" onClick={() => history.goBack()}>Cancel</button>
+                    <div className="col-md-6 pl-md-1">
+                        <button type="button" className="btn btn-secondary w-100 mt-2" onClick={() => history.goBack()}>Cancel</button>
                     </div>
                 </div>
             </form>

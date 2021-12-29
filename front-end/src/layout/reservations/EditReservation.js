@@ -82,7 +82,6 @@ function EditReservation({ updateTrigger, setUpdateTrigger }) {
                 })
                 .catch((error) => {
                     setEditingError(error);
-                    console.log(error);
                 });
             }
         } 
