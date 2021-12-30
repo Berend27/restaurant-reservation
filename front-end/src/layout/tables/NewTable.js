@@ -71,39 +71,46 @@ function NewTable({ updateTrigger, setUpdateTrigger }) {
             <h1>New Table</h1>
             <form onSubmit={handleSubmit}>
                 <div className="form-row">
-                    <div className="form-group col-md-6">
-                        <label htmlFor="table_name">Table Name</label>
-                        <input 
-                            className="form-control"
-                            id="table_name"
-                            type="text"
-                            name="table_name"
-                            onChange={handleChange}
-                            value={formData.table_name}
-                            required
-                        />
+                    <div className="form-group d-flex justify-content-end col-md-6">
+                        <div className="col-lg-9 px-0">
+                            <label htmlFor="table_name">Table Name</label>
+                            <input 
+                                className="form-control"
+                                id="table_name"
+                                type="text"
+                                name="table_name"
+                                onChange={handleChange}
+                                value={formData.table_name}
+                                required
+                            />
+                        </div>
                     </div>
-                    <div className="form-group col-md-6">
-                        <label htmlFor="capacity">Capacity</label>
-                        <input 
-                            className="form-control"
-                            id="capacity"
-                            type="number"
-                            name="capacity"
-                            min="1"
-                            onChange={handleChange}
-                            value={formData.capacity}
-                            required
-                        />
+                    <div className="form-group d-flex justify-content-start col-md-6">
+                        <div className="col-lg-9 px-0">
+                            <label htmlFor="capacity">Capacity</label>
+                            <input 
+                                className="form-control"
+                                id="capacity"
+                                type="number"
+                                name="capacity"
+                                min="1"
+                                onChange={handleChange}
+                                value={formData.capacity}
+                                required
+                            />
+                            </div>
                     </div>
                 </div>
-                {/* Todo: resize or reposition the buttons for phone sized screens */}
                 <div className="row">
-                    <div className="col-md-6 pr-md-1">
-                        <button type="submit" className="btn btn-primary w-100 mt-2">Submit</button>
+                    <div className="col-md-6 d-flex justify-content-end pr-md-1">
+                        <div className="col-lg-9 px-0">
+                            <button type="submit" className="btn btn-primary w-100 mt-2">Submit</button>
+                        </div>
                     </div>
-                    <div className="col-md-6 pl-md-1">
-                        <button type="button" className="btn btn-primary w-100 mt-2" onClick={() => history.goBack()}>Cancel</button>
+                    <div className="col-md-6 d-flex justify-content-start pl-md-1">
+                        <div className="col-lg-9 px-0">
+                            <button type="button" className="btn btn-primary w-100 mt-2" onClick={() => history.goBack()}>Cancel</button>
+                        </div>
                     </div>
                 </div>
             </form>
