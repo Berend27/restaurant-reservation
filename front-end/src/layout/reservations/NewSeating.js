@@ -1,3 +1,4 @@
+import "./Reservation.css";
 import React, { useEffect, useState } from "react";
 import ErrorAlert from "../ErrorAlert";
 import { getReservation, putTable } from "../../utils/api";
