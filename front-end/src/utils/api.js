@@ -43,7 +43,8 @@ export function getReservation(id) {
       return response.data;
     })
     .catch((error) => {
-      console.log(error.message);
+      error.message = error.response.data.error;
+      throw error;
     });
 }
 
@@ -54,7 +55,8 @@ export function getReservationsForDay(date) {
       return response.data;
     })
     .catch((error) => {
-      console.log(error.message)
+      error.message = error.response.data.error;
+      throw error;
     });
 }
 
@@ -65,7 +67,8 @@ export async function listTables() {
       return response.data;
     })
     .catch((error) => {
-      console.log(error.message);
+      error.message = error.response.data.error;
+      throw error;
     })
 }
 
