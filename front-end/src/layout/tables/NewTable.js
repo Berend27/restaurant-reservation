@@ -100,10 +100,10 @@ function NewTable({ updateTrigger, setUpdateTrigger }) {
                 {/* Todo: resize or reposition the buttons for phone sized screens */}
                 <div className="row">
                     <div className="col-md-6 pr-md-1">
-                        <button type="submit" className="btn btn-secondary w-100 mt-2">Submit</button>
+                        <button type="submit" className="btn btn-primary w-100 mt-2">Submit</button>
                     </div>
                     <div className="col-md-6 pl-md-1">
-                        <button type="button" className="btn btn-secondary w-100 mt-2" onClick={() => history.goBack()}>Cancel</button>
+                        <button type="button" className="btn btn-primary w-100 mt-2" onClick={() => history.goBack()}>Cancel</button>
                     </div>
                 </div>
             </form>

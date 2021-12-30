@@ -39,16 +39,16 @@ function DashboardContent({ cancelReservation, day, deleteSeating, setDay, reser
             <h4 className="mb-0 centered">Reservations for {putYearLast(day)}</h4>
           </div>
           <ReservationsList cancelReservation={cancelReservation} reservations={reservations} />
+          <DashboardButtons 
+            handleNext={handleNext}
+            handlePrevious={handlePrevious}
+            handleToday={handleToday}
+          />
         </div>
         <div className="col-md-6" >
           <TablesList tables={tables} deleteSeating={deleteSeating} />
         </div>
       </div>
-      <DashboardButtons 
-        handleNext={handleNext}
-        handlePrevious={handlePrevious}
-        handleToday={handleToday}
-      />
     </main>
   );
 }

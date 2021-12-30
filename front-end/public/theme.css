@@ -1,0 +1,27 @@
+.card-body {
+    background-color: #2C5472;
+}
+
+.btn {
+    color: #fff;
+}
+
+.btn-danger {
+    background-color: #B15E3D;
+    border-color: #B15E3D;
+}
+
+.btn-dashboard {
+    background-color: #2C5472;
+    border-color: #2C5472;
+}
+
+.btn-primary {
+    background-color: #2A7A58;
+    border-color: #2A7A58;
+}
+
+.btn-secondary {
+    background-color: #B17F3D;
+    border-color: #B17F3D;
+}

@@ -98,7 +98,7 @@ function ReservationForm({ reservation, setReservation, handleCancel, handleSubm
                     </div>
                     <div className="row">
                         <div className="col">
-                            <button id="submit" type="submit" className="btn btn-secondary">Submit</button>
+                            <button id="submit" type="submit" className="btn btn-primary">Submit</button>
                         </div>
                         <div className="col pl-0">
                             <button type="button" className="btn btn-secondary" onClick={handleCancel}>Cancel</button>
