@@ -2,8 +2,8 @@
  * Defines the base URL for the API.
  * The default values is overridden by the `API_BASE_URL` environment variable.
  */
- const API_BASE_URL =
- process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
+const API_BASE_URL =
+  process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
 
 const axios = require("axios");
 
@@ -14,10 +14,10 @@ const headers = new Headers();
 headers.append("Content-Type", "application/json");
 
 export function cancelReservation(reservationId) {
-  return axios 
-    .put(`${API_BASE_URL}/reservations/${reservationId}/status`,
-      { data: { status: "cancelled" }}
-    )
+  return axios
+    .put(`${API_BASE_URL}/reservations/${reservationId}/status`, {
+      data: { status: "cancelled" },
+    })
     .catch((error) => {
       error.message = error.response.data.error;
       throw error;
@@ -37,7 +37,7 @@ export function deleteAssignment(table_id) {
 }
 
 export function getReservation(id) {
-  return axios 
+  return axios
     .get(`${API_BASE_URL}/reservations/${id}`)
     .then((response) => {
       return response.data;
@@ -61,7 +61,7 @@ export function getReservationsForDay(date) {
 }
 
 export async function listTables() {
-  return axios 
+  return axios
     .get(`${API_BASE_URL}/tables`)
     .then((response) => {
       return response.data;
@@ -69,38 +69,36 @@ export async function listTables() {
     .catch((error) => {
       error.message = error.response.data.error;
       throw error;
-    })
+    });
 }
 
 export async function postReservation(reservationData) {
   return axios
     .post(`${API_BASE_URL}/reservations/new`, reservationData)
     .catch((error) => {
-      error.message = error.response.data.error
+      error.message = error.response.data.error;
       throw error;
     });
 }
 
 export function postTable(tableData) {
+  return axios.post(`${API_BASE_URL}/tables`, tableData).catch((error) => {
+    error.message = error.response.data.error;
+    throw error;
+  });
+}
+
+export function putReservation(data, reservationId) {
   return axios
-    .post(`${API_BASE_URL}/tables`, tableData)
+    .put(`${API_BASE_URL}/reservations/${reservationId}`, data)
     .catch((error) => {
       error.message = error.response.data.error;
       throw error;
     });
 }
 
-export function putReservation(data, reservationId) {
-  return axios
-    .put(`${API_BASE_URL}/reservations/${reservationId}`, data)
-    .catch(error => {
-      error.message = error.response.data.error;
-      throw error;
-    });
-}
-
 export function putTable(data, tableId) {
-  return axios 
+  return axios
     .put(`${API_BASE_URL}/tables/${tableId}/seat`, data)
     .catch((error) => {
       error.message = error.response.data.error;
@@ -109,13 +107,13 @@ export function putTable(data, tableId) {
 }
 
 export function searchForMobileNumber(mobileNumber) {
-  return axios 
+  return axios
     .get(`${API_BASE_URL}/reservations?mobile_number=${mobileNumber}`)
-    .then(response => {
+    .then((response) => {
       return response.data;
     })
-    .catch(error => {
+    .catch((error) => {
       error.message = error.response.data.error;
       throw error;
-    })
+    });
 }
