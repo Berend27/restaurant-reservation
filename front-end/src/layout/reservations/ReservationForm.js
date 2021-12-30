@@ -90,7 +90,6 @@ function ReservationForm({ reservation, setReservation, handleCancel, handleSubm
                                 name="mobile_number"
                                 onChange={handleChange}
                                 value={reservation.mobile_number}
-                                // pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"  // todo: uncomment this?
                                 placeholder="###-###-####"
                                 required
                             />
