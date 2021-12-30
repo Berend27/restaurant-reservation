@@ -7,11 +7,12 @@ import NewTable from "../tables/NewTable";
 import NotFound from "../NotFound";
 import useQuery from "../../utils/useQuery";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { 
+import {
   cancelReservation,
-  deleteAssignment, 
-  getReservationsForDay, 
-  listTables } from "../../utils/api";
+  deleteAssignment,
+  getReservationsForDay,
+  listTables,
+} from "../../utils/api";
 import { today } from "../../utils/date-time";
 import { useLocation } from "react-router-dom";
 import Search from "../search/Search";
@@ -38,27 +39,27 @@ function Dashboard() {
 
   const cancelTheReservation = async (reservation_id) => {
     try {
-        await cancelReservation(reservation_id);
-        setUpdateTrigger(!updateTrigger);
+      await cancelReservation(reservation_id);
+      setUpdateTrigger(!updateTrigger);
     } catch (error) {
-        setReservationsError(error);
+      setReservationsError(error);
     }
-  }
+  };
 
   const deleteSeating = (table) => {
     deleteAssignment(table.table_id)
-        .then(response => {
-          setUpdateTrigger(!updateTrigger);
-        })
-        .catch(error => {
-          setTablesError(error);
-        });
-}
+      .then((response) => {
+        setUpdateTrigger(!updateTrigger);
+      })
+      .catch((error) => {
+        setTablesError(error);
+      });
+  };
 
   function getDayFromQuery() {
-    if (queryParameters.has('date')) {
-      setDay(queryParameters.get('date'));
-      location.search="";
+    if (queryParameters.has("date")) {
+      setDay(queryParameters.get("date"));
+      location.search = "";
     }
   }
 
@@ -76,7 +77,7 @@ function Dashboard() {
             setTables(tablesResponse.data);
           }
         } catch (errorWithTables) {
-          setTablesError(errorWithTables)
+          setTablesError(errorWithTables);
         }
       } catch (error) {
         setReservationsError(error);
@@ -95,32 +96,45 @@ function Dashboard() {
         <Redirect to={"/dashboard"} />
       </Route>
       <Route path="/reservations/new">
-        <NewReservation updateTrigger={updateTrigger} setUpdateTrigger={setUpdateTrigger} />
+        <NewReservation
+          updateTrigger={updateTrigger}
+          setUpdateTrigger={setUpdateTrigger}
+        />
       </Route>
       <Route path="/reservations/:reservation_id/edit">
-        <EditReservation updateTrigger={updateTrigger} setUpdateTrigger={setUpdateTrigger} />
+        <EditReservation
+          updateTrigger={updateTrigger}
+          setUpdateTrigger={setUpdateTrigger}
+        />
       </Route>
       <Route path="/reservations/:reservation_id/seat">
-        <NewSeating tables={tables} updateTrigger={updateTrigger} setUpdateTrigger={setUpdateTrigger} />
+        <NewSeating
+          tables={tables}
+          updateTrigger={updateTrigger}
+          setUpdateTrigger={setUpdateTrigger}
+        />
       </Route>
       <Route path="/tables/new">
-        <NewTable updateTrigger={updateTrigger} setUpdateTrigger={setUpdateTrigger} />
+        <NewTable
+          updateTrigger={updateTrigger}
+          setUpdateTrigger={setUpdateTrigger}
+        />
       </Route>
       <Route path="/dashboard">
-        <DashboardContent 
+        <DashboardContent
           cancelReservation={cancelTheReservation}
           day={day}
           deleteSeating={deleteSeating}
-          setDay={setDay} 
-          reservations={reservations} 
-          reservationsError={reservationsError} 
+          setDay={setDay}
+          reservations={reservations}
+          reservationsError={reservationsError}
           setReservationsError={setReservationsError}
           tables={tables}
           tablesError={tablesError}
         />
       </Route>
       <Route path="/search">
-        <Search /> 
+        <Search />
       </Route>
       <Route>
         <NotFound />
