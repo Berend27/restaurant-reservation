@@ -1,8 +1,9 @@
 # restaurant-reservation  
-### Thinful Capstone: Restaurant Reservation System
+### Thinkful Capstone: Restaurant Reservation System
 
 ## Front End
-[https://restaurant-reservation-djb-c.herokuapp.com](https://restaurant-reservation-djb-c.herokuapp.com/dashboard)
+[https://restaurant-reservation-djb-c.herokuapp.com](https://restaurant-reservation-djb-c.herokuapp.com/dashboard)  
+
 <img width="1149" alt="Dashboard With Just One Reservation" src="https://user-images.githubusercontent.com/42151098/147800373-fa530cba-20aa-46e6-bb13-5d9f3e80c741.png">
 
 ## Back End
