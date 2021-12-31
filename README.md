@@ -4,7 +4,7 @@
 ## Front End
 [https://restaurant-reservation-djb-c.herokuapp.com](https://restaurant-reservation-djb-c.herokuapp.com/dashboard)  
 
-<img width="1149" alt="Dashboard With Just One Reservation" src="https://user-images.githubusercontent.com/42151098/147800373-fa530cba-20aa-46e6-bb13-5d9f3e80c741.png">
+<img width="1126" alt="Dashboard With One Reservation" src="https://user-images.githubusercontent.com/42151098/147800681-7c3abceb-b4d7-4c72-9924-80bee3e6ce55.png">
 
 ## Back End
 [https://restaurant-reservation-djb-s.herokuapp.com](https://restaurant-reservation-djb-s.herokuapp.com/)
