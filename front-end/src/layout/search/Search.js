@@ -58,10 +58,8 @@ function Search() {
               placeholder="Enter a customer's phone number"
             />
           </div>
-          <div className="col-md-3">
-            {" "}
-            {/* todo: position this button for small screens */}
-            <button type="submit" className="btn btn-primary">
+          <div className="col-md-6 mb-3">
+            <button type="submit" className="btn btn-primary w-50">
               Find
             </button>
           </div>
