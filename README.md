@@ -3,21 +3,23 @@
 
 ## Front End
 [https://restaurant-reservation-djb-c.herokuapp.com](https://restaurant-reservation-djb-c.herokuapp.com/dashboard)
+<img width="1149" alt="Dashboard With Just One Reservation" src="https://user-images.githubusercontent.com/42151098/147800373-fa530cba-20aa-46e6-bb13-5d9f3e80c741.png">
 
 ## Back End
-[https://restaurant-reservation-djb-s.herokuapp.com](https://restaurant-reservation-djb-s.herokuapp.com)
+[https://restaurant-reservation-djb-s.herokuapp.com](https://restaurant-reservation-djb-s.herokuapp.com/)
 
 Sample of a response from the API (route: /reservations?date=2022-01-03)
+<img width="461" alt="API-Call" src="https://user-images.githubusercontent.com/42151098/147800420-7e7c1aad-a7c6-4446-a14a-d62fe786fa0d.png">
 
 ### Routes
 1. /reservations
-  * /
-  * /new
-  * /:reservation_id
-  * /:reservation_id/status
+    * /
+    * /new
+    * /:reservation_id
+    * /:reservation_id/status
 2. /tables
-  * /
-  * /:table_id/seat
+    * /
+    * /:table_id/seat
 
 ## Learning Objecives
 1. Build a web app with React.
