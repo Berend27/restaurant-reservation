@@ -65,7 +65,7 @@ Run `npx knex` commands from within the `back-end` folder, which is where the `k
 
 ___
 
-## Completed Stories and Running Tests
+## Completed Stories and Running the Tests
 
 > You have been hired as a full stack developer at _Periodic Tables_, a startup that is creating a reservation system for fine dining restaurants.
 > The software is used only by restaurant personnel when a customer calls to request a reservation.
